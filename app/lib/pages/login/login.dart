@@ -1,4 +1,4 @@
-import 'package:app/layouts/default_layout.dart';
+import 'package:app/layouts/default.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';

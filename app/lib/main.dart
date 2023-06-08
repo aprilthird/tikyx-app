@@ -1,5 +1,5 @@
-import 'package:app/layouts/default_layout.dart';
-import 'package:app/pages/onboarding/on_boarding_page.dart';
+import 'package:app/layouts/default.dart';
+import 'package:app/pages/onboarding/on_boarding.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:flutter/material.dart';
 

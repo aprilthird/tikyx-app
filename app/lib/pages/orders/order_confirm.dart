@@ -1,4 +1,4 @@
-import 'package:app/pages/onboarding/permissions_page.dart';
+import 'package:app/pages/onboarding/permissions.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/dimens/dimens.dart';

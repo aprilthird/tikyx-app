@@ -1,4 +1,4 @@
-import 'package:app/pages/orders/orders_page.dart';
+import 'package:app/pages/orders/orders.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';

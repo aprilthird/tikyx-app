@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:app/pages/orders/order_detail_page.dart';
+import 'package:app/pages/orders/order_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:uikit/components/cards/shadow_card.dart';

@@ -1,4 +1,4 @@
-import 'package:app/pages/login/login_page.dart';
+import 'package:app/pages/login/login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';

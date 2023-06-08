@@ -1,10 +1,10 @@
-import 'package:app/pages/balance/balance_page.dart';
-import 'package:app/pages/commissions/comissions_page.dart';
-import 'package:app/pages/onboarding/on_boarding_page.dart';
-import 'package:app/pages/orders/orders_summary_page.dart';
-import 'package:app/pages/packing/packing_page.dart';
-import 'package:app/pages/referrals/referrals_page.dart';
-import 'package:app/pages/settings/settings_page.dart';
+import 'package:app/pages/balance/balance.dart';
+import 'package:app/pages/commissions/comissions.dart';
+import 'package:app/pages/onboarding/on_boarding.dart';
+import 'package:app/pages/orders/orders_summary.dart';
+import 'package:app/pages/packing/packing.dart';
+import 'package:app/pages/referrals/referrals.dart';
+import 'package:app/pages/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/scaffold/default_scaffold.dart';
 import 'package:uikit/structs/menu_item.dart';
