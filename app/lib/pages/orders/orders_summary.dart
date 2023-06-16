@@ -1,11 +1,13 @@
 import 'package:app/pages/orders/orders.dart';
+import 'package:data/repositories/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/cards/shadow_card.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/dimens/font_size.dart';
+import 'package:uikit/fonts/sizes.dart';
 
 class OrdersSummaryPage extends StatefulWidget {
   const OrdersSummaryPage({super.key});
@@ -15,6 +17,11 @@ class OrdersSummaryPage extends StatefulWidget {
 }
 
 class _OrdersSummaryPageState extends State<OrdersSummaryPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

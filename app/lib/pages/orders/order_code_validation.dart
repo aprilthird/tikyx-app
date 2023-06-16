@@ -1,9 +1,9 @@
-import 'package:app/pages/onboarding/permissions_page.dart';
-import 'package:app/pages/orders/order_confirm_page.dart';
+import 'package:app/pages/onboarding/permissions.dart';
+import 'package:app/pages/orders/order_confirm.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/dimens/font_size.dart';
+import 'package:uikit/fonts/sizes.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
 
 class OrderCodeValidationPage extends StatefulWidget {

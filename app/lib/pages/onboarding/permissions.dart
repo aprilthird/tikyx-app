@@ -5,7 +5,7 @@ import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/cards/shadow_card.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/dimens/font_size.dart';
+import 'package:uikit/fonts/sizes.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionsPage extends StatefulWidget {

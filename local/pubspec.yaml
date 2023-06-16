@@ -12,6 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
 
+  domain:
+    path: ../domain
+  
+  shared_preferences: ^2.1.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

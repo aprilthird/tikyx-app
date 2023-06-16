@@ -18,4 +18,13 @@ class UIKitColors {
   static const lighterPurple = Color(0xffb058d6);
   static const darkPurple = Color(0xff7205a0);
   static const darkerPurple = Color(0xff58047c);
+
+  static const success = Color(0xff98dfaf);
+  static const error = Color(0xffd9564a);
+  static const warning = Color(0xfff2cd5c);
+
+  static const webPrimary = "#e20074";
+  static const webSuccess = "#98dfaf";
+  static const webError = "#d9564a";
+  static const webWarning = "#f2cd5c";
 }

@@ -12,6 +12,15 @@ dependencies:
   flutter:
     sdk: flutter
 
+  domain:
+    path: ../domain
+
+  local:
+    path: ../local
+
+  remote:
+    path: ../remote
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

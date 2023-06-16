@@ -35,10 +35,13 @@ class MyApp extends StatelessWidget {
         primaryColorLight: UIKitColors.lighterPrimary,
         primaryColorDark: UIKitColors.darkerPrimary,
         scaffoldBackgroundColor: UIKitColors.grey,
+        // colorScheme: ColorScheme.fromSwatch().copyWith(
+        //   primary: UIKitColors.primary,
+        // ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),
-      home: const DefaultLayout(),
+      home: const OnBoardingPage(),
       //home: const DefaultLayout(title: 'Tikyx App'),
     );
   }
