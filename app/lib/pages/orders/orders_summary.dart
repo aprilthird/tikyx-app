@@ -61,7 +61,7 @@ class _OrdersSummaryPageState extends State<OrdersSummaryPage> {
               height: UIKitDimens.medium,
             ),
             const Text(
-              'Hola Juan!',
+              'Hola!',
               style: TextStyle(
                 fontSize: UIKitFontSize.extraLarge,
                 fontWeight: FontWeight.bold,

@@ -214,7 +214,11 @@ packages:
     source: hosted
     version: "6.3.0"
   google_maps_flutter:
+<<<<<<< HEAD
     dependency: "direct main"
+=======
+    dependency: "direct dev"
+>>>>>>> 052a99643ff4c33d8ba74c317afab04ad21d5ee9
     description:
       name: google_maps_flutter
       sha256: "7b417a64ee7a060f42cf44d8c274d3b562423f6fe57d2911b7b536857c0d8eb6"
@@ -493,7 +497,11 @@ packages:
     source: hosted
     version: "5.4.0"
   pin_code_fields:
+<<<<<<< HEAD
     dependency: "direct main"
+=======
+    dependency: "direct dev"
+>>>>>>> 052a99643ff4c33d8ba74c317afab04ad21d5ee9
     description:
       name: pin_code_fields
       sha256: c8652519d14688f3fe2a8288d86910a46aa0b9046d728f292d3bf6067c31b4c7
