@@ -8,6 +8,7 @@ class ShadowCard extends StatelessWidget {
     this.child,
     this.onPressed,
     this.backgroundColor,
+    this.borderColor,
     this.paddingValue,
     this.borderRadiusValue,
     this.noShadow,
@@ -15,6 +16,7 @@ class ShadowCard extends StatelessWidget {
 
   final void Function()? onPressed;
   final Color? backgroundColor;
+  final Color? borderColor;
   final double? paddingValue;
   final double? borderRadiusValue;
   final bool? noShadow;
@@ -31,6 +33,9 @@ class ShadowCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        border: borderColor != null
+            ? Border.all(width: 1, color: borderColor!)
+            : null,
         color: backgroundColor ?? Colors.white,
         borderRadius:
             BorderRadius.circular(borderRadiusValue ?? UIKitDimens.medium),

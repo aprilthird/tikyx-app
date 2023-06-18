@@ -1,4 +1,5 @@
 import 'package:app/layouts/default.dart';
+import 'package:app/pages/signup/signup_phone_input.dart';
 import 'package:data/repositories/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
@@ -76,8 +77,8 @@ class _LoginPageState extends State<LoginPage> {
                       prefixIcon: CountryCodePicker(
                         onChanged: (countryCode) {},
                         // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                        initialSelection: 'IT',
-                        favorite: ['+51', 'PE'],
+                        initialSelection: 'AR',
+                        favorite: const ['+54', 'AR'],
                         // optional. Shows only country name and flag
                         showCountryOnly: false,
                         // optional. Shows only country name and flag when popup is closed.
@@ -131,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             GreyElevatedButton(
               onPressed: () {
-                goToMainLayout();
+                goToSingupPhoneInput();
               },
               isFullWidth: true,
               child: const Text('Crear cuenta'),
@@ -143,10 +144,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   goToMainLayout() async {
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const DefaultLayout(),
+      ),
+    );
+  }
+
+  goToSingupPhoneInput() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SignupPhoneInputPage(),
       ),
     );
   }
