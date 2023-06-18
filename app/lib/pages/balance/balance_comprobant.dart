@@ -58,63 +58,29 @@ class _BalanceComprobantPageState extends State<BalanceComprobantPage> {
                     height: UIKitDimens.large,
                   ),
                   ShadowCard(
+                    backgroundColor: Colors.transparent,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Image(
                           alignment: Alignment.center,
-                          image: AssetImage(
-                              '../assets/images/image_product_1.png'),
-                        ),
-                        const SizedBox(
-                          width: UIKitDimens.medium,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Deposito / Transferencia',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                                'Esta es una descripción corta de máximo 2 lineas')
-                          ],
+                          image: AssetImage('../assets/images/comprobant.png'),
+                          height: 300,
+                          width: 250,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: UIKitDimens.medium,
-                  ),
-                  ShadowCard(
-                    child: Row(
-                      children: [
-                        const Image(
-                          alignment: Alignment.center,
-                          image: AssetImage(
-                              '../assets/images/image_product_2.png'),
-                        ),
-                        const SizedBox(
-                          width: UIKitDimens.medium,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Carga con tarjeta',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                                'Esta es una descripción corta de máximo 2 lineas')
-                          ],
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.camera_alt,
+                        color: Theme.of(context).primaryColor,
+                        size: 30.0,
+                      ),
+                      Text("Tomar o Subir una foto")
+                    ],
                   ),
                 ],
               ),

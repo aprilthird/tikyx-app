@@ -1,6 +1,6 @@
 class Balance {
   final int id;
-  final DateTime date;
+  final String date;
   final String concept;
   final double amount;
 

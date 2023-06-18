@@ -1,6 +1,6 @@
 class Commission {
   final int id;
-  final DateTime date;
+  final String date;
   final String order;
   final int statusCode;
   final String user;
