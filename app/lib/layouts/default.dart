@@ -5,6 +5,7 @@ import 'package:app/pages/orders/orders_summary.dart';
 import 'package:app/pages/packing/packing.dart';
 import 'package:app/pages/referrals/referrals.dart';
 import 'package:app/pages/settings/settings.dart';
+import 'package:app/pages/usersettings/user_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/scaffold/default_scaffold.dart';
 import 'package:uikit/structs/menu_item.dart';
@@ -29,6 +30,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
       MenuItem(id: 3, title: 'Comisiones', icon: Icons.wallet),
       MenuItem(id: 4, title: 'Paquetería', icon: Icons.local_shipping),
       MenuItem(id: 5, title: 'Configuración', icon: Icons.settings),
+      MenuItem(id: 6, title: 'Datos', icon: Icons.verified_user_sharp),
     ];
 
     return DefaultScaffold(
@@ -62,6 +64,8 @@ class _DefaultLayoutState extends State<DefaultLayout> {
         return const PackingPage();
       case 5:
         return const SettingsPage();
+      case 6:
+        return const UserSettingsPage();
       default:
         return const OrdersSummaryPage();
     }

@@ -45,7 +45,6 @@ class _BalanceDetailPageState extends State<BalanceDetailPage> {
                         'Selecciona el medio por el cual \nqueres hacer el deposito a tu cuenta',
                         style: TextStyle(
                           fontSize: UIKitDimens.medium,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],

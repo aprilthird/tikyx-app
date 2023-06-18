@@ -3,8 +3,11 @@ import 'dart:math';
 import 'package:app/pages/balance/balance_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/colors/colors.dart';
+import 'package:uikit/components/buttons/grey_elevated_button.dart';
+import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/cards/shadow_card.dart';
 import 'package:uikit/dimens/dimens.dart';
+import 'package:uikit/dimens/font_size.dart';
 import 'package:domain/models/balances.dart';
 
 class BalancePage extends StatefulWidget {
@@ -18,7 +21,7 @@ class _BalancePageState extends State<BalancePage> {
   final List<Balance> data = [
     new Balance(
         id: 213455,
-        date: DateTime.now(),
+        date: "17/05/2023",
         concept: "Pago Comisiones",
         amount: 20000)
   ];
@@ -33,14 +36,65 @@ class _BalancePageState extends State<BalancePage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Transacciones:',
+              ShadowCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Su saldo es:',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: UIKitDimens.small,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          '\$ 21,543',
+                          style: TextStyle(
+                            fontSize: UIKitFontSize.doubleExtraLarge,
+                          ),
+                        ),
+                        PrimaryElevatedButton(
+                          onPressed: () {
+                            goToBalanceDetail();
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(Icons.file_copy),
+                              SizedBox(
+                                width: UIKitDimens.small,
+                              ),
+                              Text('Detalles'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
-                height: UIKitDimens.large,
+                height: UIKitDimens.extraLarge,
+              ),
+              Text(
+                'Transacciones:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: UIKitDimens.extraSmall,
               ),
               Text(
                 'Movimientos recientes',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               const SizedBox(
                 height: UIKitDimens.extraLarge,
@@ -98,9 +152,6 @@ class _BalancePageState extends State<BalancePage> {
                       Material(
                         color: Colors.transparent,
                         child: InkWell(
-                          onTap: () {
-                            goToBalanceDetail();
-                          },
                           child: Padding(
                             padding: const EdgeInsets.all(UIKitDimens.small),
                             child: Row(
@@ -130,7 +181,7 @@ class _BalancePageState extends State<BalancePage> {
                                   flex: 1,
                                   child: Text(
                                     item.amount.toString(),
-                                    textAlign: TextAlign.start,
+                                    textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),

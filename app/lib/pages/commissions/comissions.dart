@@ -4,9 +4,11 @@ import 'dart:math';
 import 'package:app/pages/commissions/comissions_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/colors/colors.dart';
+import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/cards/shadow_card.dart';
 import 'package:uikit/dimens/dimens.dart';
 import 'package:domain/models/commissions.dart';
+import 'package:uikit/dimens/font_size.dart';
 
 class CommissionsPage extends StatefulWidget {
   const CommissionsPage({super.key});
@@ -19,7 +21,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
   final List<Commission> data = [
     new Commission(
         id: 213455,
-        date: DateTime.now(),
+        date: "10/04/23",
         order: "#213455",
         user: "Alfredo",
         statusCode: 0,
@@ -36,17 +38,66 @@ class _CommissionsPageState extends State<CommissionsPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Transacciones:',
+              ShadowCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Su saldo es:',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: UIKitDimens.small,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          '\$ 21,543',
+                          style: TextStyle(
+                            fontSize: UIKitFontSize.doubleExtraLarge,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text('Proximo pago:\n24/052023'),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
-                height: UIKitDimens.large,
+                height: UIKitDimens.extraLarge,
+              ),
+              Text(
+                'Operaciones:',
               ),
               Text(
                 'Movimientos recientes',
               ),
               const SizedBox(
                 height: UIKitDimens.extraLarge,
+              ),
+              SizedBox(
+                height: 50,
+                child: TextField(
+                  cursorHeight: 25,
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      suffixIcon: Icon(Icons.filter_list_rounded),
+                      fillColor: Colors.white,
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      hintText:
+                          'Escribe lo que buscas\nfecha, orden o estado de la comisión'),
+                ),
               ),
               ShadowCard(
                 paddingValue: 0,
@@ -58,7 +109,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Expanded(
-                            flex: 1,
+                            flex: 2,
                             child: Text(
                               'Fecha',
                               textAlign: TextAlign.start,
@@ -102,7 +153,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                             ),
                           ),
                           Expanded(
-                            flex: 1,
+                            flex: 2,
                             child: Text(
                               'Valor',
                               textAlign: TextAlign.center,
@@ -132,7 +183,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Text(
                                     item.date.toString(),
                                     textAlign: TextAlign.start,
@@ -152,7 +203,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Card(
                                     color: item.statusCode == 0
                                         ? UIKitColors.lighterRed
@@ -170,7 +221,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Text(
                                     item.user,
                                     textAlign: TextAlign.start,
@@ -180,7 +231,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Text(
                                     item.amount.toString(),
                                     textAlign: TextAlign.start,

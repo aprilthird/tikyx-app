@@ -108,12 +108,6 @@ class _ComissionsDetailPageState extends State<ComissionsDetailPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        'Total: \$700',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                     ],
                   ),
                   const SizedBox(

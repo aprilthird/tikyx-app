@@ -57,6 +57,7 @@ class _BalanceComprobantDetailPageState
                   height: UIKitDimens.large,
                 ),
                 ShadowCard(
+                  backgroundColor: Colors.transparent,
                   child: Row(
                     children: [
                       Column(
@@ -79,6 +80,7 @@ class _BalanceComprobantDetailPageState
                   height: UIKitDimens.medium,
                 ),
                 ShadowCard(
+                  backgroundColor: Colors.transparent,
                   child: Row(
                     children: [
                       Column(

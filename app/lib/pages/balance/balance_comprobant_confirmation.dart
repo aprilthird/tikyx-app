@@ -20,6 +20,12 @@ class _BalanceComprobantDetailConfirmationPageState
       body: Padding(
         padding: const EdgeInsets.all(UIKitDimens.medium),
         child: Column(children: [
+          const Image(
+            alignment: Alignment.center,
+            image: AssetImage('../assets/images/comprobant_final.png'),
+            height: 300,
+            width: 250,
+          ),
           Expanded(
             flex: 1,
             child: Column(
