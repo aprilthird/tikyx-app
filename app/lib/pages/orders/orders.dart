@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:uikit/components/cards/shadow_card.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:domain/models/orders.dart';
+import 'package:domain/models/order.dart';
+import 'package:domain/models/order_test.dart';
+import 'package:data/repositories/order.dart';
 
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
@@ -15,36 +17,52 @@ class OrdersPage extends StatefulWidget {
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-  final List<Order> data = [
-    new Order(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    new Order(
+  Future<List<Order>>? _futureOrders;
+
+  final List<OrderTest> data = [
+    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
+    OrderTest(
         id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    new Order(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    new Order(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    new Order(
+    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
+    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
+    OrderTest(
         id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    new Order(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    new Order(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    new Order(
+    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
+    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
+    OrderTest(
         id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    new Order(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    new Order(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    new Order(
+    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
+    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
+    OrderTest(
         id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    new Order(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    new Order(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    new Order(
+    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
+    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
+    OrderTest(
         id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    new Order(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    new Order(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    new Order(
+    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
+    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
+    OrderTest(
         id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    new Order(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    new Order(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    new Order(
+    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
+    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
+    OrderTest(
         id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    new Order(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
+    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getAllOrders();
+    });
+  }
+
+  getAllOrders() async {
+    setState(() {
+      _futureOrders = OrderRepository.getAll();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

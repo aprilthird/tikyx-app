@@ -1,7 +1,7 @@
 import 'package:app/pages/onboarding/permissions.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/dimens/font_size.dart';
+import 'package:uikit/fonts/sizes.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
 
 class OnBoardingPage extends StatefulWidget {

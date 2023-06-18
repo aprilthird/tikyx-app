@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../colors/colors.dart';
 import '../../dimens/dimens.dart';
-import '../../dimens/font_size.dart';
+import '../../fonts/sizes.dart';
 import '../../structs/menu_item.dart';
 import '../buttons/grey_elevated_button.dart';
 import '../buttons/primary_elevated_button.dart';

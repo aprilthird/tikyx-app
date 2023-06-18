@@ -19,7 +19,9 @@ class PrimaryElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: () {
+        onPressed?.call();
+      },
       style: ElevatedButton.styleFrom(
         minimumSize: isFullWidth ?? false
             ? const Size.fromHeight(UIKitDimens.extraExtraLarge)

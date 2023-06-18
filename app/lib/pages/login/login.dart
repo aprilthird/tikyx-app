@@ -1,11 +1,13 @@
 import 'package:app/layouts/default.dart';
+import 'package:data/repositories/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
+import 'package:uikit/components/loaders/primary_button_loader.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/dimens/font_size.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:uikit/fonts/sizes.dart';
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:uikit/helpers/toasts.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +17,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isLogin = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,10 +99,32 @@ class _LoginPageState extends State<LoginPage> {
             ),
             PrimaryElevatedButton(
               onPressed: () {
-                goToMainLayout();
+                setState(() {
+                  isLogin = true;
+                });
+                AuthRepository.signIn("test").then((value) async {
+                  await ToastHelpers.showSuccess("Sesión iniciada.");
+                  goToMainLayout();
+                }).onError((error, stackTrace) async {
+                  setState(() {
+                    isLogin = false;
+                  });
+                  await ToastHelpers.showError("Error al iniciar sesión.");
+                });
               },
               isFullWidth: true,
-              child: const Text('Entrar'),
+              child: isLogin
+                  ? const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        PrimaryButtonLoader(),
+                        SizedBox(
+                          width: UIKitDimens.small,
+                        ),
+                        Text('Entrando'),
+                      ],
+                    )
+                  : const Text('Entrar'),
             ),
             const SizedBox(
               height: UIKitDimens.medium,
