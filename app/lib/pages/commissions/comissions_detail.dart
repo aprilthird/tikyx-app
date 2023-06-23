@@ -76,8 +76,7 @@ class _ComissionsDetailPageState extends State<ComissionsDetailPage> {
                       children: [
                         const Image(
                           alignment: Alignment.center,
-                          image:
-                              AssetImage('../assets/images/image_user_1.png'),
+                          image: AssetImage('assets/images/image_user_1.png'),
                         ),
                         const SizedBox(
                           width: UIKitDimens.medium,

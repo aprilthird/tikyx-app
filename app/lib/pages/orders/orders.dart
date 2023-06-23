@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:app/pages/orders/order_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:uikit/components/cards/shadow_card.dart';
 import 'package:uikit/dimens/dimens.dart';
 import 'package:domain/models/order.dart';
-import 'package:domain/models/order_test.dart';
 import 'package:data/repositories/order.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -19,35 +16,21 @@ class OrdersPage extends StatefulWidget {
 class _OrdersPageState extends State<OrdersPage> {
   Future<List<Order>>? _futureOrders;
 
-  final List<OrderTest> data = [
-    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    OrderTest(
-        id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    OrderTest(
-        id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    OrderTest(
-        id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    OrderTest(
-        id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    OrderTest(
-        id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    OrderTest(
-        id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
-    OrderTest(id: 213455, user: 'Kierra Press', statusCode: 0, amount: 100.00),
-    OrderTest(
-        id: 213456, user: 'Carter Baptista', statusCode: 1, amount: 100.00),
-    OrderTest(id: 213457, user: 'Jaydon Geidt', statusCode: 0, amount: 100.00),
+  final List<Order> testData = [
+    Order(
+        id: 213455, customerId: 1, referralId: 1, status: "0", amount: 100.00),
+    Order(
+        id: 213456, customerId: 1, referralId: 1, status: "1", amount: 100.00),
+    Order(
+        id: 213457, customerId: 1, referralId: 1, status: "1", amount: 100.00),
+    Order(
+        id: 213458, customerId: 1, referralId: 1, status: "0", amount: 100.00),
+    Order(
+        id: 213459, customerId: 1, referralId: 1, status: "1", amount: 100.00),
+    Order(
+        id: 213450, customerId: 1, referralId: 1, status: "0", amount: 100.00),
+    Order(
+        id: 213452, customerId: 1, referralId: 1, status: "0", amount: 100.00),
   ];
 
   @override
@@ -62,6 +45,124 @@ class _OrdersPageState extends State<OrdersPage> {
     setState(() {
       _futureOrders = OrderRepository.getAll();
     });
+  }
+
+  Widget buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.all(UIKitDimens.medium),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Text(
+              'Orden',
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              'Socio',
+              textAlign: TextAlign.start,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Text(
+              'Estado',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildTable() {
+    return FutureBuilder(
+      future: _futureOrders,
+      builder: (context, snapshot) {
+        if (!snapshot.hasError) {
+          final orders = snapshot.hasData ? snapshot.data! : testData;
+          return Column(
+            children: [
+              for (var item in orders) ...[
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      goToOrderDetail();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(UIKitDimens.small),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              '#${item.id}',
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              item.customerId.toString(),
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Card(
+                              color: item.status == "0"
+                                  ? UIKitColors.lighterRed
+                                  : UIKitColors.lighterPurple,
+                              child: Padding(
+                                padding: const EdgeInsets.all(
+                                    UIKitDimens.extraSmall),
+                                child: Text(
+                                  item.status == "0" ? 'Pendiente' : 'Pagado',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const Divider(
+                  color: Colors.black12,
+                  height: 1,
+                ),
+              ],
+            ],
+          );
+        }
+        return const CircularProgressIndicator();
+      },
+    );
   }
 
   @override
@@ -94,111 +195,12 @@ class _OrdersPageState extends State<OrdersPage> {
                 paddingValue: 0,
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(UIKitDimens.medium),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              'Orden',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Text(
-                              'Socio',
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              'Estado',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    buildHeader(),
                     const Divider(
                       color: Colors.black12,
                       height: 1,
                     ),
-                    for (var item in data!) ...[
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            goToOrderDetail();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(UIKitDimens.small),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    '#${item.id}',
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    item.user,
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Card(
-                                    color: item.statusCode == 0
-                                        ? UIKitColors.lighterRed
-                                        : UIKitColors.lighterPurple,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(
-                                          UIKitDimens.extraSmall),
-                                      child: Text(
-                                        item.statusCode == 0
-                                            ? 'Pendiente'
-                                            : 'Pagado',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Divider(
-                        color: Colors.black12,
-                        height: 1,
-                      ),
-                    ]
+                    buildTable(),
                   ],
                 ),
               ),

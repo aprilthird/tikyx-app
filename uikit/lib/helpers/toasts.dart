@@ -6,7 +6,7 @@ class ToastHelpers {
   static showPrimary(String message) async {
     await Fluttertoast.showToast(
       msg: message,
-      toastLength: Toast.LENGTH_SHORT,
+      toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       webPosition: "center",
       timeInSecForIosWeb: 1,
@@ -20,7 +20,7 @@ class ToastHelpers {
   static showSuccess(String message) async {
     await Fluttertoast.showToast(
       msg: message,
-      toastLength: Toast.LENGTH_SHORT,
+      toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       webPosition: "center",
       timeInSecForIosWeb: 1,
@@ -34,7 +34,7 @@ class ToastHelpers {
   static showError(String message) async {
     await Fluttertoast.showToast(
       msg: message,
-      toastLength: Toast.LENGTH_SHORT,
+      toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       webPosition: "center",
       timeInSecForIosWeb: 1,
@@ -48,7 +48,7 @@ class ToastHelpers {
   static showWarning(String message) async {
     await Fluttertoast.showToast(
       msg: message,
-      toastLength: Toast.LENGTH_SHORT,
+      toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       webPosition: "center",
       timeInSecForIosWeb: 1,

@@ -64,7 +64,7 @@ class _BalanceComprobantPageState extends State<BalanceComprobantPage> {
                       children: [
                         const Image(
                           alignment: Alignment.center,
-                          image: AssetImage('../assets/images/comprobant.png'),
+                          image: AssetImage('assets/images/comprobant.png'),
                           height: 300,
                           width: 250,
                         ),

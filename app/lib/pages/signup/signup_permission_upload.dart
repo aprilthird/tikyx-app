@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:app/layouts/default.dart';
 import 'package:app/pages/signup/signup_phone_validation.dart';
 import 'package:app/pages/signup/signup_summary.dart';
 import 'package:data/repositories/auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
+import 'package:uikit/components/buttons/white_elevated_button.dart';
 import 'package:uikit/components/loaders/primary_button_loader.dart';
 import 'package:uikit/dimens/dimens.dart';
 import 'package:uikit/fonts/sizes.dart';
@@ -22,8 +27,36 @@ class SignupPermissionUploadPage extends StatefulWidget {
 class _SignupPermissionUploadPageState
     extends State<SignupPermissionUploadPage> {
   bool isLoading = false;
+  bool imageLoading = false;
+  File? imageFile;
 
-  @override
+  void pickImage() async {
+    setState(() {
+      imageLoading = true;
+    });
+    final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      imageLoading = false;
+    });
+    if (file != null) {
+      setState(() {
+        imageFile = File(file.path);
+      });
+    }
+  }
+
+  Widget buildSelectedImage() {
+    if (!imageLoading) {
+      if (imageFile != null) {
+        return kIsWeb ? Image.network(imageFile!.path) : Image.file(imageFile!);
+      }
+      return const Image(
+        image: AssetImage('assets/images/placeholder_file.png'),
+      );
+    }
+    return const CircularProgressIndicator();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,16 +77,20 @@ class _SignupPermissionUploadPageState
               flex: 1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Image(
-                    image: AssetImage('../assets/images/placeholder_file.png'),
+                  Container(
+                    height: 250,
+                    alignment: Alignment.center,
+                    child: buildSelectedImage(),
                   ),
                   const SizedBox(
                     height: UIKitDimens.medium,
                   ),
-                  GreyElevatedButton(
-                    onPressed: () {},
+                  WhiteElevatedButton(
+                    onPressed: () {
+                      pickImage();
+                    },
                     isFullWidth: true,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -125,14 +162,5 @@ class _SignupPermissionUploadPageState
 
   goBack() {
     Navigator.pop(context);
-  }
-
-  goToSignupSummary() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SignupPhoneValidationPage(),
-      ),
-    );
   }
 }

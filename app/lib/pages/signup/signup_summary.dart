@@ -45,6 +45,7 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
               Text(
                 'Completado',
                 style: TextStyle(
+                  fontSize: UIKitFontSize.large,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -54,6 +55,7 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
             'Comenzar',
             textAlign: TextAlign.center,
             style: TextStyle(
+              fontSize: UIKitFontSize.large,
               color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.bold,
             ),
@@ -87,6 +89,8 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ShadowCard(
+                    paddingValue: UIKitDimens.medium,
+                    secondaryPaddingValue: UIKitDimens.small,
                     onPressed: () async {
                       await goToSignupPermissionUpload();
                       setState(() {
@@ -114,13 +118,7 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                             )
                           ],
                         ),
-                        const SizedBox(
-                          height: UIKitDimens.small,
-                        ),
                         const Divider(),
-                        const SizedBox(
-                          height: UIKitDimens.small,
-                        ),
                         Row(
                           children: [
                             Expanded(
@@ -133,6 +131,8 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                     ),
                   ),
                   ShadowCard(
+                    paddingValue: UIKitDimens.medium,
+                    secondaryPaddingValue: UIKitDimens.small,
                     onPressed: () async {
                       await goToSignupPickLocation();
                       setState(() {
@@ -160,13 +160,7 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                             )
                           ],
                         ),
-                        const SizedBox(
-                          height: UIKitDimens.small,
-                        ),
                         const Divider(),
-                        const SizedBox(
-                          height: UIKitDimens.small,
-                        ),
                         Row(
                           children: [
                             Expanded(
@@ -179,6 +173,8 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                     ),
                   ),
                   ShadowCard(
+                    paddingValue: UIKitDimens.medium,
+                    secondaryPaddingValue: UIKitDimens.small,
                     onPressed: () async {
                       await goToSignupIdUpload();
                       setState(() {
@@ -206,13 +202,7 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                             )
                           ],
                         ),
-                        const SizedBox(
-                          height: UIKitDimens.small,
-                        ),
                         const Divider(),
-                        const SizedBox(
-                          height: UIKitDimens.small,
-                        ),
                         Row(
                           children: [
                             Expanded(
@@ -225,6 +215,8 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                     ),
                   ),
                   ShadowCard(
+                    paddingValue: UIKitDimens.medium,
+                    secondaryPaddingValue: UIKitDimens.small,
                     onPressed: () async {
                       await goToSignupPhotoUpload();
                       setState(() {
@@ -252,13 +244,7 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                             )
                           ],
                         ),
-                        const SizedBox(
-                          height: UIKitDimens.small,
-                        ),
                         const Divider(),
-                        const SizedBox(
-                          height: UIKitDimens.small,
-                        ),
                         Row(
                           children: [
                             Expanded(

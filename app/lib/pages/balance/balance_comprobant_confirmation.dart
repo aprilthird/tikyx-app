@@ -22,7 +22,7 @@ class _BalanceComprobantDetailConfirmationPageState
         child: Column(children: [
           const Image(
             alignment: Alignment.center,
-            image: AssetImage('../assets/images/comprobant_final.png'),
+            image: AssetImage('assets/images/comprobant_final.png'),
             height: 300,
             width: 250,
           ),

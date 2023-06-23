@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/cards/shadow_card.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/dimens/font_size.dart';
+import 'package:uikit/fonts/sizes.dart';
 
 class UserSettingsPage extends StatefulWidget {
   const UserSettingsPage({super.key});
@@ -32,8 +32,7 @@ class _UserSettingsPageState extends State<UserSettingsPage> {
                       children: <Widget>[
                         const Image(
                           alignment: Alignment.center,
-                          image:
-                              AssetImage('../assets/images/icon_profile.png'),
+                          image: AssetImage('assets/images/icon_profile.png'),
                         ),
                         Positioned(
                           top: 25,

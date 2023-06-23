@@ -76,8 +76,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       children: [
                         const Image(
                           alignment: Alignment.center,
-                          image:
-                              AssetImage('../assets/images/image_user_1.png'),
+                          image: AssetImage('assets/images/image_user_1.png'),
                         ),
                         const SizedBox(
                           width: UIKitDimens.medium,
@@ -124,8 +123,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       children: [
                         const Image(
                           alignment: Alignment.center,
-                          image: AssetImage(
-                              '../assets/images/image_product_1.png'),
+                          image:
+                              AssetImage('assets/images/image_product_1.png'),
                         ),
                         const SizedBox(
                           width: UIKitDimens.medium,
@@ -154,8 +153,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                       children: [
                         const Image(
                           alignment: Alignment.center,
-                          image: AssetImage(
-                              '../assets/images/image_product_2.png'),
+                          image:
+                              AssetImage('assets/images/image_product_2.png'),
                         ),
                         const SizedBox(
                           width: UIKitDimens.medium,

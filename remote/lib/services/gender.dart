@@ -1,17 +1,17 @@
 import 'package:remote/helpers/api.dart';
-import 'package:domain/models/order.dart';
+import 'package:domain/models/gender.dart';
 
-class OrderService {
-  static const tableName = "orders";
+class GenderService {
+  static const tableName = "genre";
 
-  static Future<List<Order>> getAll() async {
+  static Future<List<Gender>> getAll() async {
     var apiInstance = await ApiInstance.getInstance();
     var client = apiInstance.getClient();
     final objectsList =
         await client.from(tableName).select<List<Map<String, dynamic>>>();
-    final List<Order> resultList = [];
+    final List<Gender> resultList = [];
     for (var object in objectsList) {
-      resultList.add(Order.fromJson(object));
+      resultList.add(Gender.fromJson(object));
     }
     return resultList;
   }

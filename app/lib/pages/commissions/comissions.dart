@@ -7,8 +7,9 @@ import 'package:uikit/colors/colors.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/cards/shadow_card.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:domain/models/commissions.dart';
-import 'package:uikit/dimens/font_size.dart';
+import 'package:domain/models/commission.dart';
+import 'package:data/repositories/commission.dart';
+import 'package:uikit/fonts/sizes.dart';
 
 class CommissionsPage extends StatefulWidget {
   const CommissionsPage({super.key});
@@ -18,15 +19,130 @@ class CommissionsPage extends StatefulWidget {
 }
 
 class _CommissionsPageState extends State<CommissionsPage> {
+  Future<List<Commission>>? _futurePayments;
+
   final List<Commission> data = [
     new Commission(
-        id: 213455,
-        date: "10/04/23",
-        order: "#213455",
-        user: "Alfredo",
-        statusCode: 0,
-        amount: 20000)
+      id: "213455",
+      createdAt: "10/04/23",
+      orderId: 213455,
+      sellerId: 1222,
+      parentSellerId: 222,
+      // user: "Alfredo",
+      // statusCode: 0,
+      amountSeller: 20000,
+      parentAmountSeller: 20000,
+    ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getAllCommissions();
+    });
+  }
+
+  getAllCommissions() async {
+    setState(() {
+      _futurePayments = CommissionRepository.getAll();
+    });
+  }
+
+  Widget buildTable() {
+    return FutureBuilder(
+        future: _futurePayments,
+        builder: (context, snapshot) {
+          if (!snapshot.hasError) {
+            var commissions = snapshot.hasData ? snapshot.data! : data;
+            return Column(
+              children: [
+                for (var item in commissions) ...[
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        goToComissionsDetail();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(UIKitDimens.small),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                item.createdAt.toString(),
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                item.orderId.toString(),
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Card(
+                                color: /*item.statusCode*/ 0 == 0
+                                    ? UIKitColors.lighterRed
+                                    : UIKitColors.lighterPurple,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(
+                                      UIKitDimens.extraSmall),
+                                  child: Text(
+                                    /*item.statusCode*/ 0 == 0
+                                        ? 'Pendiente'
+                                        : 'Pagado',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                "", //item.user,
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                item.amountSeller.toString(),
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    color: Colors.black12,
+                    height: 1,
+                  ),
+                ],
+              ],
+            );
+          }
+          return const CircularProgressIndicator();
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +159,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Su saldo es:',
+                      'Monto:',
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
@@ -78,7 +194,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                 'Operaciones:',
               ),
               Text(
-                'Movimientos recientes',
+                'Movimientos de comisiones',
               ),
               const SizedBox(
                 height: UIKitDimens.extraLarge,
@@ -98,6 +214,9 @@ class _CommissionsPageState extends State<CommissionsPage> {
                       hintText:
                           'Escribe lo que buscas\nfecha, orden o estado de la comisión'),
                 ),
+              ),
+              const SizedBox(
+                height: UIKitDimens.medium,
               ),
               ShadowCard(
                 paddingValue: 0,
@@ -170,86 +289,7 @@ class _CommissionsPageState extends State<CommissionsPage> {
                       color: Colors.black12,
                       height: 1,
                     ),
-                    for (var item in data!) ...[
-                      Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            goToComissionsDetail();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(UIKitDimens.small),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    item.date.toString(),
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    item.order,
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Card(
-                                    color: item.statusCode == 0
-                                        ? UIKitColors.lighterRed
-                                        : UIKitColors.lighterPurple,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(
-                                          UIKitDimens.extraSmall),
-                                      child: Text(
-                                        item.statusCode == 0
-                                            ? 'Pendiente'
-                                            : 'Pagado',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    item.user,
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    item.amount.toString(),
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const Divider(
-                        color: Colors.black12,
-                        height: 1,
-                      ),
-                    ]
+                    buildTable(),
                   ],
                 ),
               ),

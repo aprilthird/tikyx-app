@@ -1,21 +1,22 @@
-import 'package:app/pages/orders/order_confirm.dart';
+import 'package:app/layouts/default.dart';
+import 'package:app/pages/signup/signup_phone_input.dart';
 import 'package:app/pages/signup/signup_pick_role.dart';
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:data/repositories/auth.dart';
+import 'package:data/repositories/seller.dart';
 import 'package:domain/models/session.dart';
-import 'package:domain/models/user.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
+import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/loaders/primary_button_loader.dart';
 import 'package:uikit/dimens/dimens.dart';
 import 'package:uikit/fonts/sizes.dart';
-import 'package:uikit/components/buttons/primary_elevated_button.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:uikit/helpers/toasts.dart';
 
-class SignupPhoneValidationPage extends StatefulWidget {
-  const SignupPhoneValidationPage({
+class LoginOtpPage extends StatefulWidget {
+  const LoginOtpPage({
     super.key,
     required this.countryCode,
     required this.phoneNumber,
@@ -25,11 +26,10 @@ class SignupPhoneValidationPage extends StatefulWidget {
   final String phoneNumber;
 
   @override
-  State<SignupPhoneValidationPage> createState() =>
-      _SignupPhoneValidationPageState();
+  State<LoginOtpPage> createState() => _LoginOtpPageState();
 }
 
-class _SignupPhoneValidationPageState extends State<SignupPhoneValidationPage> {
+class _LoginOtpPageState extends State<LoginOtpPage> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
   String codeOTP = "";
@@ -42,14 +42,30 @@ class _SignupPhoneValidationPageState extends State<SignupPhoneValidationPage> {
         child: Padding(
           padding: const EdgeInsets.all(UIKitDimens.medium),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Verificación',
-                style: TextStyle(
-                  fontSize: UIKitDimens.large,
-                  fontWeight: FontWeight.bold,
+              const Image(
+                image: AssetImage('assets/images/icon_marketplace.png'),
+              ),
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              const SizedBox(
+                width: 150,
+                child: Image(
+                  image: AssetImage('assets/images/logo_alt_primary.png'),
+                ),
+              ),
+              const SizedBox(
+                height: UIKitDimens.extraLarge,
+              ),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Bienvenido!',
+                  style: TextStyle(
+                    fontSize: UIKitFontSize.doubleExtraLarge,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const SizedBox(
@@ -59,14 +75,6 @@ class _SignupPhoneValidationPageState extends State<SignupPhoneValidationPage> {
                   'Te enviamos un SMS con el código de verificación de 6 dígitos al número:'),
               const SizedBox(
                 height: UIKitDimens.medium,
-              ),
-              Text(
-                "${widget.countryCode} ${widget.phoneNumber}",
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: UIKitFontSize.large,
-                  fontWeight: FontWeight.bold,
-                ),
               ),
               Expanded(
                 flex: 1,
@@ -125,7 +133,7 @@ class _SignupPhoneValidationPageState extends State<SignupPhoneValidationPage> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () async {
-                            await AuthRepository.signIn(
+                            await AuthRepository.signUp(
                                     "${widget.countryCode}${widget.phoneNumber}")
                                 .then((value) {})
                                 .onError((error, stackTrace) async {
@@ -146,8 +154,18 @@ class _SignupPhoneValidationPageState extends State<SignupPhoneValidationPage> {
                     await AuthRepository.verifyOTP(
                             "${widget.countryCode}${widget.phoneNumber}",
                             codeOTP)
-                        .then((value) async {
-                      await goToSignupPickRole(value);
+                        .then((session) async {
+                      await SellerRepository.getByUserId(session.user.id)
+                          .then((value) async {
+                        if (value == null) {
+                          await goToSignupPickRole(session);
+                        } else {
+                          await goToMainLayout();
+                        }
+                      }).onError((error, stackTrace) async {
+                        await ToastHelpers.showError("Error: $error");
+                      });
+                      await goToMainLayout();
                     }).onError((error, stackTrace) async {
                       await ToastHelpers.showError("Error: $error");
                     });
@@ -199,6 +217,15 @@ class _SignupPhoneValidationPageState extends State<SignupPhoneValidationPage> {
           phoneNumber: widget.phoneNumber,
           session: session,
         ),
+      ),
+    );
+  }
+
+  goToMainLayout() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DefaultLayout(),
       ),
     );
   }

@@ -38,8 +38,7 @@ class _SignupFinalMessagePagetate extends State<SignupFinalMessagePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Image(
-                    image:
-                        AssetImage('../assets/images/icon_register_sent.png'),
+                    image: AssetImage('assets/images/icon_register_sent.png'),
                   ),
                   const SizedBox(
                     height: UIKitDimens.medium,

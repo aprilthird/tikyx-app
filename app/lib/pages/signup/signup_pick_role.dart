@@ -2,6 +2,8 @@ import 'package:app/layouts/default.dart';
 import 'package:app/pages/signup/signup_personal_data.dart';
 import 'package:app/pages/signup/signup_phone_validation.dart';
 import 'package:data/repositories/auth.dart';
+import 'package:domain/models/session.dart';
+import 'package:domain/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
@@ -13,7 +15,14 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:uikit/helpers/toasts.dart';
 
 class SignupPickRolePage extends StatefulWidget {
-  const SignupPickRolePage({super.key});
+  const SignupPickRolePage({
+    super.key,
+    required this.phoneNumber,
+    required this.session,
+  });
+
+  final String phoneNumber;
+  final Session session;
 
   @override
   State<SignupPickRolePage> createState() => _SignupPickRolePageState();
@@ -80,7 +89,7 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
                           children: [
                             Image(
                               image: AssetImage(
-                                  '../assets/images/icon_role_vendor.png'),
+                                  'assets/images/icon_role_vendor.png'),
                             ),
                             SizedBox(
                               width: UIKitDimens.medium,
@@ -117,7 +126,7 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
                           children: [
                             Image(
                               image: AssetImage(
-                                  '../assets/images/icon_role_subscriber.png'),
+                                  'assets/images/icon_role_subscriber.png'),
                             ),
                             SizedBox(
                               width: UIKitDimens.medium,

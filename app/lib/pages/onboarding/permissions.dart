@@ -26,7 +26,7 @@ class _PermissionsPageState extends State<PermissionsPage> {
           children: [
             const Image(
               alignment: Alignment.center,
-              image: AssetImage('../assets/images/icon_permission.png'),
+              image: AssetImage('assets/images/icon_permission.png'),
             ),
             const SizedBox(
               height: UIKitDimens.medium,
@@ -146,19 +146,19 @@ class _PermissionsPageState extends State<PermissionsPage> {
     }
 
     var locationStatus = await Permission.location.status;
-    var contactsStatus = await Permission.contacts.status;
+    var cameraStatus = await Permission.camera.status;
 
     if (locationStatus.isDenied) {
       locationStatus = await Permission.location.request();
     }
-    if (contactsStatus.isDenied) {
-      contactsStatus = await Permission.contacts.request();
+    if (cameraStatus.isDenied) {
+      cameraStatus = await Permission.camera.request();
     }
     if (locationStatus.isPermanentlyDenied ||
-        contactsStatus.isPermanentlyDenied) {
+        cameraStatus.isPermanentlyDenied) {
       openAppSettings();
     }
-    if (locationStatus.isGranted && contactsStatus.isGranted) {
+    if (locationStatus.isGranted && cameraStatus.isGranted) {
       goToLoginPage();
     }
   }

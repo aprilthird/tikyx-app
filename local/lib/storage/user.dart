@@ -5,7 +5,6 @@ class UserStorage {
   static const String idKey = "CURRENT_USER_ID";
   static const String audKey = "CURRENT_USER_AUD";
   static const String createdAtKey = "CURRENT_USER_CREATED_AT";
-  static const String emailKey = "CURRENT_USER_EMAIL";
   static const String phoneNumberKey = "CURRENT_USER_PHONE";
   static const String roleKey = "CURRENT_USER_ROLE";
   static const String lastSignInAtKey = "CURRENT_USER_LAST_IN";
@@ -15,9 +14,6 @@ class UserStorage {
     await prefs.setString(idKey, user.id);
     await prefs.setString(idKey, user.aud);
     await prefs.setString(idKey, user.createdAt);
-    if (user.email != null) {
-      await prefs.setString(idKey, user.email!);
-    }
     if (user.phoneNumber != null) {
       await prefs.setString(idKey, user.phoneNumber!);
     }
@@ -34,7 +30,6 @@ class UserStorage {
     final id = prefs.getString(idKey);
     final aud = prefs.getString(audKey);
     final createdAt = prefs.getString(createdAtKey);
-    final email = prefs.getString(emailKey);
     final phoneNumber = prefs.getString(phoneNumberKey);
     final role = prefs.getString(roleKey);
     final lastSignInAt = prefs.getString(lastSignInAtKey);
@@ -43,7 +38,6 @@ class UserStorage {
         id: id,
         aud: aud,
         createdAt: createdAt,
-        email: email,
         phoneNumber: phoneNumber,
         role: role,
         lastSignInAt: lastSignInAt,

@@ -36,7 +36,7 @@ class _OrdersSummaryPageState extends State<OrdersSummaryPage> {
               children: [
                 const Image(
                   alignment: Alignment.center,
-                  image: AssetImage('../assets/images/icon_profile.png'),
+                  image: AssetImage('assets/images/icon_profile.png'),
                 ),
                 Row(
                   children: [
@@ -156,8 +156,8 @@ class _OrdersSummaryPageState extends State<OrdersSummaryPage> {
                             padding: EdgeInsets.all(UIKitDimens.small),
                             child: Image(
                               alignment: Alignment.center,
-                              image: AssetImage(
-                                  '../assets/images/icon_received.png'),
+                              image:
+                                  AssetImage('assets/images/icon_received.png'),
                             ),
                           ),
                         ),
@@ -211,8 +211,8 @@ class _OrdersSummaryPageState extends State<OrdersSummaryPage> {
                             padding: EdgeInsets.all(UIKitDimens.small),
                             child: Image(
                               alignment: Alignment.center,
-                              image: AssetImage(
-                                  '../assets/images/icon_earnings.png'),
+                              image:
+                                  AssetImage('assets/images/icon_earnings.png'),
                             ),
                           ),
                         ),
@@ -259,7 +259,7 @@ class _OrdersSummaryPageState extends State<OrdersSummaryPage> {
                 children: [
                   Image(
                     alignment: Alignment.center,
-                    image: AssetImage('../assets/images/icon_stats.png'),
+                    image: AssetImage('assets/images/icon_stats.png'),
                   ),
                   SizedBox(
                     width: UIKitDimens.medium,

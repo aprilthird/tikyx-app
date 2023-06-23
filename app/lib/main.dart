@@ -1,5 +1,8 @@
 import 'package:app/layouts/default.dart';
 import 'package:app/pages/onboarding/on_boarding.dart';
+import 'package:app/pages/signup/signup_pick_role.dart';
+import 'package:domain/models/session.dart';
+import 'package:domain/models/user.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:flutter/material.dart';
 

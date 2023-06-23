@@ -10,6 +10,7 @@ class ShadowCard extends StatelessWidget {
     this.backgroundColor,
     this.borderColor,
     this.paddingValue,
+    this.secondaryPaddingValue,
     this.borderRadiusValue,
     this.noShadow,
   });
@@ -18,13 +19,17 @@ class ShadowCard extends StatelessWidget {
   final Color? backgroundColor;
   final Color? borderColor;
   final double? paddingValue;
+  final double? secondaryPaddingValue;
   final double? borderRadiusValue;
   final bool? noShadow;
   final Widget? child;
 
   Widget content() {
     return Padding(
-      padding: EdgeInsets.all(paddingValue ?? UIKitDimens.medium),
+      padding: secondaryPaddingValue == null
+          ? EdgeInsets.all(paddingValue ?? UIKitDimens.medium)
+          : EdgeInsets.symmetric(
+              horizontal: paddingValue!, vertical: secondaryPaddingValue!),
       child: child,
     );
   }

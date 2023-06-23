@@ -1,21 +1,23 @@
 class Order {
   final int id;
-  final int orderIdVtext;
+  final String? orderIdVtext;
   final int customerId;
   final int referralId;
-  final String keyword;
+  final String? keyword;
   final String status;
-  final int warehouse;
+  final String? warehouse;
+  final double? amount;
   final int? paymentId;
 
   Order({
     required this.id,
-    required this.orderIdVtext,
+    this.orderIdVtext,
     required this.customerId,
     required this.referralId,
-    required this.keyword,
+    this.keyword,
     required this.status,
-    required this.warehouse,
+    this.warehouse,
+    this.amount,
     this.paymentId,
   });
 
@@ -28,6 +30,7 @@ class Order {
       keyword: json['keyword'],
       status: json['status'],
       warehouse: json['warehouse'],
+      amount: json['amount'],
       paymentId: json['id_payment'],
     );
   }

@@ -83,12 +83,16 @@ class _SignupPickLocationPageState extends State<SignupPickLocationPage> {
                   const SizedBox(
                     height: UIKitDimens.medium,
                   ),
-                  GoogleMap(
-                    mapType: MapType.hybrid,
-                    initialCameraPosition: _kGooglePlex,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                    },
+                  Container(
+                    height: 350,
+                    alignment: Alignment.center,
+                    child: GoogleMap(
+                      mapType: MapType.hybrid,
+                      initialCameraPosition: _kGooglePlex,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                      },
+                    ),
                   ),
                   const SizedBox(
                     height: UIKitDimens.medium,
@@ -155,14 +159,5 @@ class _SignupPickLocationPageState extends State<SignupPickLocationPage> {
 
   goBack() {
     Navigator.pop(context);
-  }
-
-  goToSignupSummary() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const SignupPhoneValidationPage(),
-      ),
-    );
   }
 }

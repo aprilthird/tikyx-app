@@ -51,7 +51,7 @@ class _OrderConfirmPageState extends State<OrderConfirmPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Image(
-                        image: AssetImage('../assets/images/icon_dollar.png'),
+                        image: AssetImage('assets/images/icon_dollar.png'),
                       ),
                       const SizedBox(
                         height: UIKitDimens.medium,
