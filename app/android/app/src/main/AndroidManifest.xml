@@ -1,8 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.READ_BASIC_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    
     <application
         android:label="app"
         android:name="${applicationName}"
@@ -22,6 +28,10 @@
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
+              />
+            <meta-data 
+              android:name="com.google.android.geo.API_KEY"
+              android:value="AIzaSyDO-CUGmHEcPS9KdQ7kEJfKgcbli2c7nuc"
               />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
