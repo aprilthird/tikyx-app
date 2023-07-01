@@ -1,4 +1,4 @@
-import 'package:domain/models/user.dart';
+import 'package:domain/models/app_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserStorage {
@@ -9,11 +9,10 @@ class UserStorage {
   static const String roleKey = "CURRENT_USER_ROLE";
   static const String lastSignInAtKey = "CURRENT_USER_LAST_IN";
 
-  static Future saveCurrentUser(User user) async {
+  static Future saveCurrentUser(AppUser user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(idKey, user.id);
     await prefs.setString(idKey, user.aud);
-    await prefs.setString(idKey, user.createdAt);
     if (user.phoneNumber != null) {
       await prefs.setString(idKey, user.phoneNumber!);
     }
@@ -25,19 +24,17 @@ class UserStorage {
     }
   }
 
-  static Future<User?> getCurrentUser() async {
+  static Future<AppUser?> getCurrentUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final id = prefs.getString(idKey);
     final aud = prefs.getString(audKey);
-    final createdAt = prefs.getString(createdAtKey);
     final phoneNumber = prefs.getString(phoneNumberKey);
     final role = prefs.getString(roleKey);
     final lastSignInAt = prefs.getString(lastSignInAtKey);
-    if (id != null && aud != null && createdAt != null) {
-      var user = User(
+    if (id != null && aud != null) {
+      var user = AppUser(
         id: id,
         aud: aud,
-        createdAt: createdAt,
         phoneNumber: phoneNumber,
         role: role,
         lastSignInAt: lastSignInAt,

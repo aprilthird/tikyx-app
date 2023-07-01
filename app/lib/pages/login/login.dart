@@ -1,7 +1,9 @@
 import 'package:app/layouts/default.dart';
+import 'package:app/pages/login/login_otp.dart';
 import 'package:app/pages/signup/signup_phone_input.dart';
 import 'package:core/utils/environment.dart';
 import 'package:data/repositories/auth.dart';
+import 'package:domain/models/session.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
@@ -11,6 +13,7 @@ import 'package:uikit/dimens/dimens.dart';
 import 'package:uikit/fonts/sizes.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:uikit/helpers/toasts.dart';
+import 'package:core/utils/message.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   bool isLogin = false;
   String phoneNumber = "";
-  String countryCode = "";
+  String countryCode = "+54";
 
   @override
   Widget build(BuildContext context) {
@@ -100,11 +103,11 @@ class _LoginPageState extends State<LoginPage> {
                         alignLeft: false,
                       ),
                       validator: (value) {
-                        if (Environment.isDevelopment) {
+                        if (EnvironmentUtils.isDevelopment) {
                           return null;
                         }
                         if (value!.isEmpty) {
-                          return "Número de teléfono inválido.";
+                          return MessageUtils.requiredError("Teléfono");
                         } else {
                           phoneNumber = value;
                         }
@@ -120,12 +123,16 @@ class _LoginPageState extends State<LoginPage> {
                     isLogin = true;
                   });
                   if (_formKey.currentState!.validate()) {
-                    final authCallback = Environment.isDevelopment
+                    final authCallback = EnvironmentUtils.isDevelopment
                         ? AuthRepository.signInDevelopment("")
                         : AuthRepository.signIn("$countryCode$phoneNumber");
                     authCallback.then((value) async {
-                      await ToastHelpers.showSuccess("Sesión iniciada.");
-                      goToMainLayout();
+                      if (value is Session) {
+                        await ToastHelpers.showSuccess("Sesión iniciada.");
+                        goToMainLayout();
+                      } else {
+                        goToLoginOtp();
+                      }
                     }).onError((error, stackTrace) async {
                       setState(() {
                         isLogin = false;
@@ -179,6 +186,18 @@ class _LoginPageState extends State<LoginPage> {
       context,
       MaterialPageRoute(
         builder: (context) => const SignupPhoneInputPage(),
+      ),
+    );
+  }
+
+  goToLoginOtp() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginOtpPage(
+          countryCode: countryCode,
+          phoneNumber: phoneNumber,
+        ),
       ),
     );
   }

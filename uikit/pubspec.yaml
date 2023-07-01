@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
     
   fluttertoast: ^8.2.2
+  dropdown_button2: ^2.1.4
+  flutter_typeahead: ^4.6.2
 
 dev_dependencies:
   flutter_test:

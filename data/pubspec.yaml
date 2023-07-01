@@ -20,6 +20,8 @@ dependencies:
 
   remote:
     path: ../remote
+    
+  cross_file: ^0.3.3+4
 
 dev_dependencies:
   flutter_test:

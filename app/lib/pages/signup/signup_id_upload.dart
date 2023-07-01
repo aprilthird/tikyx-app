@@ -1,9 +1,3 @@
-import 'dart:io';
-
-import 'package:app/layouts/default.dart';
-import 'package:app/pages/signup/signup_phone_validation.dart';
-import 'package:app/pages/signup/signup_summary.dart';
-import 'package:data/repositories/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,12 +6,16 @@ import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/buttons/white_elevated_button.dart';
 import 'package:uikit/components/loaders/primary_button_loader.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/fonts/sizes.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:uikit/helpers/toasts.dart';
+import 'package:domain/models/seller.dart';
+import 'package:universal_io/io.dart';
 
 class SignupIdUploadPage extends StatefulWidget {
-  const SignupIdUploadPage({super.key});
+  const SignupIdUploadPage({
+    super.key,
+    required this.seller,
+  });
+
+  final Seller seller;
 
   @override
   State<SignupIdUploadPage> createState() => _SignupIdUploadPageState();
@@ -27,8 +25,17 @@ class _SignupIdUploadPageState extends State<SignupIdUploadPage> {
   bool isLoading = false;
   bool frontImageLoading = false;
   bool backImageLoading = false;
-  File? frontImageFile;
-  File? backImageFile;
+  XFile? frontImageFile;
+  XFile? backImageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      frontImageFile = widget.seller.idFrontImageFile;
+      backImageFile = widget.seller.idBackImageFile;
+    });
+  }
 
   void pickImage(bool isFront) async {
     setState(() {
@@ -39,6 +46,15 @@ class _SignupIdUploadPageState extends State<SignupIdUploadPage> {
       }
     });
     final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        if (isFront) {
+          frontImageFile = file;
+        } else {
+          backImageFile = file;
+        }
+      });
+    }
     setState(() {
       if (isFront) {
         frontImageLoading = false;
@@ -46,15 +62,6 @@ class _SignupIdUploadPageState extends State<SignupIdUploadPage> {
         backImageLoading = false;
       }
     });
-    if (file != null) {
-      setState(() {
-        if (isFront) {
-          frontImageFile = File(file.path);
-        } else {
-          backImageFile = File(file.path);
-        }
-      });
-    }
   }
 
   Widget buildSelectedImage(bool isFront) {
@@ -63,7 +70,7 @@ class _SignupIdUploadPageState extends State<SignupIdUploadPage> {
         if (frontImageFile != null) {
           return kIsWeb
               ? Image.network(frontImageFile!.path)
-              : Image.file(frontImageFile!);
+              : Image.file(File(frontImageFile!.path));
         }
         return const Image(
           image: AssetImage('assets/images/placeholder_image.png'),
@@ -75,7 +82,7 @@ class _SignupIdUploadPageState extends State<SignupIdUploadPage> {
       if (backImageFile != null) {
         return kIsWeb
             ? Image.network(backImageFile!.path)
-            : Image.file(backImageFile!);
+            : Image.file(File(backImageFile!.path));
       }
       return const Image(
         image: AssetImage('assets/images/placeholder_image.png'),
@@ -194,25 +201,28 @@ class _SignupIdUploadPageState extends State<SignupIdUploadPage> {
                 setState(() {
                   isLoading = true;
                 });
-                await Future.delayed(const Duration(seconds: 2));
-                goBack();
+                if (frontImageFile != null && backImageFile != null) {
+                  goBackAndSave();
+                }
                 setState(() {
                   isLoading = false;
                 });
               },
               isFullWidth: true,
-              child: isLoading
-                  ? const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PrimaryButtonLoader(),
-                        SizedBox(
-                          width: UIKitDimens.small,
-                        ),
-                        Text('Enviando'),
-                      ],
-                    )
-                  : const Text('Enviar y continuar'),
+              child: frontImageFile == null || backImageFile == null
+                  ? const Text('Seleccione las imágenes')
+                  : isLoading
+                      ? const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            PrimaryButtonLoader(),
+                            SizedBox(
+                              width: UIKitDimens.small,
+                            ),
+                            Text('Enviando'),
+                          ],
+                        )
+                      : const Text('Enviar y continuar'),
             ),
             const SizedBox(
               height: UIKitDimens.medium,
@@ -232,5 +242,11 @@ class _SignupIdUploadPageState extends State<SignupIdUploadPage> {
 
   goBack() {
     Navigator.pop(context);
+  }
+
+  goBackAndSave() {
+    widget.seller.idFrontImageFile = frontImageFile;
+    widget.seller.idBackImageFile = backImageFile;
+    Navigator.pop(context, widget.seller);
   }
 }

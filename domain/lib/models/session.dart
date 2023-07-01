@@ -1,4 +1,4 @@
-import 'package:domain/models/user.dart';
+import 'package:domain/models/app_user.dart';
 
 class Session {
   final String accessToken;
@@ -8,7 +8,7 @@ class Session {
   final String? tokenType;
   final String? providerToken;
   final String? providerRefreshToken;
-  final User user;
+  final AppUser user;
 
   Session({
     required this.accessToken,

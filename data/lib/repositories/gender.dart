@@ -12,4 +12,13 @@ class GenderRepository {
       rethrow;
     }
   }
+
+  static Future<Gender> getById(int id) async {
+    try {
+      return GenderService.getById(id);
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
 }

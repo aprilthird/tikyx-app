@@ -1,3 +1,3 @@
-class Environment {
-  static const bool isDevelopment = true;
+class EnvironmentUtils {
+  static const bool isDevelopment = false;
 }

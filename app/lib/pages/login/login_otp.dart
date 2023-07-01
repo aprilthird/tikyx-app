@@ -1,6 +1,7 @@
 import 'package:app/layouts/default.dart';
 import 'package:app/pages/signup/signup_phone_input.dart';
 import 'package:app/pages/signup/signup_pick_role.dart';
+import 'package:core/utils/message.dart';
 import 'package:data/repositories/auth.dart';
 import 'package:data/repositories/seller.dart';
 import 'package:domain/models/session.dart';
@@ -115,7 +116,7 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
                       onChanged: (value) {},
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Ingrese el código OTP enviado.";
+                          return MessageUtils.requiredError("Código OTP");
                         } else {
                           codeOTP = value;
                         }
@@ -156,16 +157,25 @@ class _LoginOtpPageState extends State<LoginOtpPage> {
                             codeOTP)
                         .then((session) async {
                       await SellerRepository.getByUserId(session.user.id)
-                          .then((value) async {
-                        if (value == null) {
+                          .then((seller) async {
+                        if (seller == null) {
                           await goToSignupPickRole(session);
                         } else {
-                          await goToMainLayout();
+                          if (seller.verified == null) {
+                            await ToastHelpers.showWarning(
+                                "Alerta: Tu cuenta no ha sido aún verificada.");
+                            goBack();
+                          } else if (!seller.verified!) {
+                            await ToastHelpers.showWarning(
+                                "Alerta: Tu cuenta no ha sido aún verificada.");
+                            goBack();
+                          } else {
+                            await goToMainLayout();
+                          }
                         }
                       }).onError((error, stackTrace) async {
                         await ToastHelpers.showError("Error: $error");
                       });
-                      await goToMainLayout();
                     }).onError((error, stackTrace) async {
                       await ToastHelpers.showError("Error: $error");
                     });

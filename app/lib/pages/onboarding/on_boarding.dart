@@ -19,10 +19,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FileRepository.getBuckets();
-      FileRepository.getFiles("sellers");
-    });
   }
 
   @override

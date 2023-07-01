@@ -5,4 +5,5 @@ class UIKitDimens {
   static const large = 24.0;
   static const extraLarge = 32.0;
   static const extraExtraLarge = 48.0;
+  static const extraExtraExtraLarge = 64.0;
 }
