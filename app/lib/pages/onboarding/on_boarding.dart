@@ -7,6 +7,7 @@ import 'package:uikit/dimens/dimens.dart';
 import 'package:uikit/fonts/sizes.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:data/repositories/file.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
@@ -15,10 +16,18 @@ class OnBoardingPage extends StatefulWidget {
   State<OnBoardingPage> createState() => _OnBoardingPageState();
 }
 
+late Future googleFontsPending;
+
 class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   void initState() {
     super.initState();
+
+    googleFontsPending = GoogleFonts.pendingFonts([
+      GoogleFonts.poppins(),
+      GoogleFonts.montserrat(fontStyle: FontStyle.italic),
+    ]);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FileRepository.getBuckets();
       FileRepository.getFiles("sellers");
@@ -27,6 +36,10 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final customTextStyle = GoogleFonts.poppins(
+      textStyle: Theme.of(context).textTheme.headlineMedium,
+    );
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -50,13 +63,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               padding: const EdgeInsets.all(UIKitDimens.medium),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'Bienvenido a Tikyx',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: UIKitFontSize.extraLarge,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    // style: TextStyle(
+                    //   fontSize: UIKitFontSize.extraLarge,
+                    //   fontWeight: FontWeight.bold,
+                    // ),
+                    style: customTextStyle,
                   ),
                   const SizedBox(
                     height: UIKitDimens.medium,
