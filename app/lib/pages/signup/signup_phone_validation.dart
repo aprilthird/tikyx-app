@@ -1,9 +1,7 @@
-import 'package:app/pages/orders/order_confirm.dart';
 import 'package:app/pages/signup/signup_pick_role.dart';
-import 'package:country_code_picker/country_code_picker.dart';
+import 'package:core/utils/message.dart';
 import 'package:data/repositories/auth.dart';
 import 'package:domain/models/session.dart';
-import 'package:domain/models/user.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -107,7 +105,7 @@ class _SignupPhoneValidationPageState extends State<SignupPhoneValidationPage> {
                       onChanged: (value) {},
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Ingrese el código OTP enviado.";
+                          return MessageUtils.requiredError("Código OTP");
                         } else {
                           codeOTP = value;
                         }

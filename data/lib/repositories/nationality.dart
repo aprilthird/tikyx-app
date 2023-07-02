@@ -12,4 +12,13 @@ class NationalityRepository {
       rethrow;
     }
   }
+
+  static Future<Nationality> getById(int id) async {
+    try {
+      return NationalityService.getById(id);
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
 }

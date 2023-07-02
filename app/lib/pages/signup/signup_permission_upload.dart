@@ -1,9 +1,4 @@
-import 'dart:io';
-
-import 'package:app/layouts/default.dart';
-import 'package:app/pages/signup/signup_phone_validation.dart';
-import 'package:app/pages/signup/signup_summary.dart';
-import 'package:data/repositories/auth.dart';
+import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,9 +10,16 @@ import 'package:uikit/dimens/dimens.dart';
 import 'package:uikit/fonts/sizes.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:uikit/helpers/toasts.dart';
+import 'package:domain/models/pup.dart';
+import 'package:universal_io/io.dart';
 
 class SignupPermissionUploadPage extends StatefulWidget {
-  const SignupPermissionUploadPage({super.key});
+  const SignupPermissionUploadPage({
+    super.key,
+    required this.pup,
+  });
+
+  final Pup pup;
 
   @override
   State<SignupPermissionUploadPage> createState() =>
@@ -28,27 +30,37 @@ class _SignupPermissionUploadPageState
     extends State<SignupPermissionUploadPage> {
   bool isLoading = false;
   bool imageLoading = false;
-  File? imageFile;
+  XFile? imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      imageFile = widget.pup.authImageFile;
+    });
+  }
 
   void pickImage() async {
     setState(() {
       imageLoading = true;
     });
     final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        imageFile = file;
+      });
+    }
     setState(() {
       imageLoading = false;
     });
-    if (file != null) {
-      setState(() {
-        imageFile = File(file.path);
-      });
-    }
   }
 
   Widget buildSelectedImage() {
     if (!imageLoading) {
       if (imageFile != null) {
-        return kIsWeb ? Image.network(imageFile!.path) : Image.file(imageFile!);
+        return kIsWeb
+            ? Image.network(imageFile!.path)
+            : Image.file(File(imageFile!.path));
       }
       return const Image(
         image: AssetImage('assets/images/placeholder_file.png'),
@@ -124,25 +136,28 @@ class _SignupPermissionUploadPageState
                 setState(() {
                   isLoading = true;
                 });
-                await Future.delayed(const Duration(seconds: 2));
-                goBack();
+                if (imageFile != null) {
+                  goBackAndSave();
+                }
                 setState(() {
                   isLoading = false;
                 });
               },
               isFullWidth: true,
-              child: isLoading
-                  ? const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PrimaryButtonLoader(),
-                        SizedBox(
-                          width: UIKitDimens.small,
-                        ),
-                        Text('Enviando'),
-                      ],
-                    )
-                  : const Text('Enviar y continuar'),
+              child: imageFile == null
+                  ? const Text('Selecciona una imagen')
+                  : isLoading
+                      ? const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            PrimaryButtonLoader(),
+                            SizedBox(
+                              width: UIKitDimens.small,
+                            ),
+                            Text('Enviando'),
+                          ],
+                        )
+                      : const Text('Enviar y continuar'),
             ),
             const SizedBox(
               height: UIKitDimens.medium,
@@ -162,5 +177,10 @@ class _SignupPermissionUploadPageState
 
   goBack() {
     Navigator.pop(context);
+  }
+
+  goBackAndSave() {
+    widget.pup.authImageFile = imageFile;
+    Navigator.pop(context, widget.pup);
   }
 }

@@ -1,15 +1,12 @@
-import 'package:app/layouts/default.dart';
 import 'package:app/pages/signup/signup_phone_validation.dart';
-import 'package:app/pages/signup/signup_summary.dart';
+import 'package:core/utils/message.dart';
 import 'package:data/repositories/auth.dart';
-import 'package:domain/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/loaders/primary_button_loader.dart';
 import 'package:uikit/components/inputs/custom_text_form_field.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/fonts/sizes.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:uikit/helpers/toasts.dart';
 
@@ -68,7 +65,7 @@ class _SignupPhoneInputPageState extends State<SignupPhoneInputPage> {
                       hideText: false,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Número de teléfono inválido.";
+                          return MessageUtils.requiredError("Teléfono");
                         } else {
                           phoneNumber = value;
                         }

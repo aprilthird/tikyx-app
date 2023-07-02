@@ -1,9 +1,3 @@
-import 'dart:io';
-
-import 'package:app/layouts/default.dart';
-import 'package:app/pages/signup/signup_phone_validation.dart';
-import 'package:app/pages/signup/signup_summary.dart';
-import 'package:data/repositories/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,12 +6,16 @@ import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/buttons/white_elevated_button.dart';
 import 'package:uikit/components/loaders/primary_button_loader.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/fonts/sizes.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:uikit/helpers/toasts.dart';
+import 'package:domain/models/seller.dart';
+import 'package:universal_io/io.dart';
 
 class SignupPhotoUploadPage extends StatefulWidget {
-  const SignupPhotoUploadPage({super.key});
+  const SignupPhotoUploadPage({
+    super.key,
+    required this.seller,
+  });
+
+  final Seller seller;
 
   @override
   State<SignupPhotoUploadPage> createState() => _SignupPhotoUploadPageState();
@@ -26,30 +24,40 @@ class SignupPhotoUploadPage extends StatefulWidget {
 class _SignupPhotoUploadPageState extends State<SignupPhotoUploadPage> {
   bool isLoading = false;
   bool imageLoading = false;
-  File? imageFile;
+  XFile? imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      imageFile = widget.seller.profileImageFile;
+    });
+  }
 
   void pickImage() async {
     setState(() {
       imageLoading = true;
     });
     final file = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (file != null) {
+      setState(() {
+        imageFile = file;
+      });
+    }
     setState(() {
       imageLoading = false;
     });
-    if (file != null) {
-      setState(() {
-        imageFile = File(file.path);
-      });
-    }
   }
 
   Widget buildSelectedImage() {
     if (!imageLoading) {
       if (imageFile != null) {
-        return kIsWeb ? Image.network(imageFile!.path) : Image.file(imageFile!);
+        return kIsWeb
+            ? Image.network(imageFile!.path)
+            : Image.file(File(imageFile!.path));
       }
       return const Image(
-        image: AssetImage('assets/images/placeholder_user.png'),
+        image: AssetImage('assets/images/placeholder_user.jpg'),
       );
     }
     return const CircularProgressIndicator();
@@ -112,25 +120,28 @@ class _SignupPhotoUploadPageState extends State<SignupPhotoUploadPage> {
                 setState(() {
                   isLoading = true;
                 });
-                await Future.delayed(const Duration(seconds: 2));
-                goBack();
+                if (imageFile != null) {
+                  goBackAndSave();
+                }
                 setState(() {
                   isLoading = false;
                 });
               },
               isFullWidth: true,
-              child: isLoading
-                  ? const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PrimaryButtonLoader(),
-                        SizedBox(
-                          width: UIKitDimens.small,
-                        ),
-                        Text('Enviando'),
-                      ],
-                    )
-                  : const Text('Enviar y continuar'),
+              child: imageFile == null
+                  ? const Text('Selecciona una imagen')
+                  : isLoading
+                      ? const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            PrimaryButtonLoader(),
+                            SizedBox(
+                              width: UIKitDimens.small,
+                            ),
+                            Text('Enviando'),
+                          ],
+                        )
+                      : const Text('Enviar y continuar'),
             ),
             const SizedBox(
               height: UIKitDimens.medium,
@@ -150,5 +161,10 @@ class _SignupPhotoUploadPageState extends State<SignupPhotoUploadPage> {
 
   goBack() {
     Navigator.pop(context);
+  }
+
+  goBackAndSave() {
+    widget.seller.profileImageFile = imageFile;
+    Navigator.pop(context, widget.seller);
   }
 }

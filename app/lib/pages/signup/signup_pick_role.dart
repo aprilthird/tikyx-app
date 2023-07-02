@@ -1,18 +1,11 @@
-import 'package:app/layouts/default.dart';
 import 'package:app/pages/signup/signup_personal_data.dart';
-import 'package:app/pages/signup/signup_phone_validation.dart';
-import 'package:data/repositories/auth.dart';
+import 'package:core/utils/seller.dart';
 import 'package:domain/models/session.dart';
-import 'package:domain/models/user.dart';
+import 'package:domain/models/seller.dart';
 import 'package:flutter/material.dart';
-import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/cards/shadow_card.dart';
-import 'package:uikit/components/loaders/primary_button_loader.dart';
 import 'package:uikit/dimens/dimens.dart';
-import 'package:uikit/fonts/sizes.dart';
-import 'package:country_code_picker/country_code_picker.dart';
-import 'package:uikit/helpers/toasts.dart';
 
 class SignupPickRolePage extends StatefulWidget {
   const SignupPickRolePage({
@@ -29,21 +22,14 @@ class SignupPickRolePage extends StatefulWidget {
 }
 
 class _SignupPickRolePageState extends State<SignupPickRolePage> {
-  int roleSelected = 0;
+  String roleSelected = "";
 
   Widget selectedCheck() {
     return Align(
       alignment: Alignment.topRight,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(UIKitDimens.medium),
-        ),
-        padding: const EdgeInsets.all(UIKitDimens.extraSmall),
-        child: const Icon(
-          Icons.check,
-          color: Colors.white,
-        ),
+      child: Icon(
+        Icons.check_circle_rounded,
+        color: Theme.of(context).primaryColor,
       ),
     );
   }
@@ -77,10 +63,10 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
                   ShadowCard(
                     onPressed: () {
                       setState(() {
-                        roleSelected = 1;
+                        roleSelected = SellerUtils.typeOwner;
                       });
                     },
-                    borderColor: roleSelected == 1
+                    borderColor: roleSelected == SellerUtils.typeOwner
                         ? Theme.of(context).primaryColor
                         : null,
                     child: Stack(
@@ -107,17 +93,19 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
                             ),
                           ],
                         ),
-                        if (roleSelected == 1) ...[selectedCheck()],
+                        if (roleSelected == SellerUtils.typeOwner) ...[
+                          selectedCheck()
+                        ],
                       ],
                     ),
                   ),
                   ShadowCard(
                     onPressed: () {
                       setState(() {
-                        roleSelected = 2;
+                        roleSelected = SellerUtils.typeReferral;
                       });
                     },
-                    borderColor: roleSelected == 2
+                    borderColor: roleSelected == SellerUtils.typeReferral
                         ? Theme.of(context).primaryColor
                         : null,
                     child: Stack(
@@ -144,7 +132,9 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
                             ),
                           ],
                         ),
-                        if (roleSelected == 2) ...[selectedCheck()],
+                        if (roleSelected == SellerUtils.typeReferral) ...[
+                          selectedCheck()
+                        ],
                       ],
                     ),
                   ),
@@ -153,10 +143,13 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
             ),
             PrimaryElevatedButton(
               onPressed: () {
-                goToSignupPersonalData();
+                if (roleSelected.isNotEmpty) {
+                  goToSignupPersonalData();
+                }
               },
               isFullWidth: true,
-              child: const Text('Continuar'),
+              child: Text(
+                  roleSelected.isEmpty ? 'Selecciona una acción' : 'Continuar'),
             ),
           ],
         ),
@@ -165,10 +158,21 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
   }
 
   goToSignupPersonalData() async {
+    final seller = Seller(
+      name: "",
+      userId: widget.session.user.id,
+      genderId: 0,
+      nationalityId: 0,
+      workCity: "",
+      type: roleSelected,
+    );
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const SignupPersonalDataPage(),
+        builder: (context) => SignupPersonalDataPage(
+          session: widget.session,
+          seller: seller,
+        ),
       ),
     );
   }

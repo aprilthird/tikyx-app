@@ -1,15 +1,22 @@
 import 'package:app/layouts/default.dart';
 import 'package:app/pages/signup/signup_phone_validation.dart';
+import 'package:app/pages/signup/signup_pick_referral.dart';
 import 'package:app/pages/signup/signup_summary.dart';
+import 'package:core/utils/message.dart';
+import 'package:core/utils/seller.dart';
 import 'package:domain/models/nationality.dart';
 import 'package:domain/models/gender.dart';
+import 'package:domain/models/pup.dart';
+import 'package:domain/models/seller.dart';
 import 'package:data/repositories/nationality.dart';
 import 'package:data/repositories/gender.dart';
+import 'package:domain/models/session.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
 import 'package:uikit/components/inputs/custom_text_form_field.dart';
+import 'package:uikit/components/inputs/custom_dropdown_form_field.dart';
 import 'package:uikit/components/loaders/primary_button_loader.dart';
 import 'package:uikit/dimens/dimens.dart';
 import 'package:uikit/fonts/sizes.dart';
@@ -17,7 +24,14 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:uikit/helpers/toasts.dart';
 
 class SignupPersonalDataPage extends StatefulWidget {
-  const SignupPersonalDataPage({super.key});
+  const SignupPersonalDataPage({
+    super.key,
+    required this.session,
+    required this.seller,
+  });
+
+  final Session session;
+  final Seller seller;
 
   @override
   State<SignupPersonalDataPage> createState() => _SignupPersonalDataPageState();
@@ -27,28 +41,7 @@ class _SignupPersonalDataPageState extends State<SignupPersonalDataPage> {
   final _formKey = GlobalKey<FormState>();
   Future<List<Nationality>>? _futureNationalities;
   Future<List<Gender>>? _futureGenders;
-  String name = "";
-  String nationalityId = "";
-  String genderId = "";
-  String workCity = "";
-
   bool isLoading = false;
-  final List<String> genderItems = [
-    'Masculino',
-    'Femenino',
-  ];
-  final List<String> nationalityItems = [
-    'Argentina',
-    'Colombia',
-    'Chile',
-    'Perú',
-    'Uruguay',
-    'Bolivia',
-    'Paraguay',
-    'Ecuador',
-    'Venezuela',
-    'Brasil',
-  ];
 
   @override
   void initState() {
@@ -72,6 +65,9 @@ class _SignupPersonalDataPageState extends State<SignupPersonalDataPage> {
   }
 
   Widget buildForm() {
+    if (_futureNationalities == null || _futureGenders == null) {
+      return const CircularProgressIndicator();
+    }
     return FutureBuilder(
       future: Future.wait([_futureNationalities!, _futureGenders!]),
       builder: (context, snapshot) {
@@ -89,98 +85,78 @@ class _SignupPersonalDataPageState extends State<SignupPersonalDataPage> {
                 prefixIcon: const Icon(Icons.info_outline),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return "El campo es obligatorio";
+                    return MessageUtils.requiredError("Nombres y Apellidos");
                   }
-                  setState(() {});
+                  widget.seller.name = value;
                   return null;
                 },
               ),
               const SizedBox(
                 height: UIKitDimens.medium,
               ),
-              DropdownButtonFormField2(
-                decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.zero,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(UIKitDimens.medium),
-                  ),
-                  prefixIcon: Icon(Icons.battery_saver),
-                ),
-                isExpanded: true,
+              CustomDropdownFormField(
                 hint: const Text('Género'),
-                buttonStyleData: const ButtonStyleData(
-                  height: 60,
-                  padding: EdgeInsets.only(left: 20, right: 10),
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(
-                      UIKitDimens.medium,
-                    ),
-                  ),
-                ),
+                prefixIcon: const Icon(Icons.people),
                 onChanged: (value) {},
                 items: genders
                     .map(
-                      (item) => DropdownMenuItem<String>(
+                      (item) => DropdownMenuItem<int>(
                         value: item.id,
                         child: Text(item.name),
                       ),
                     )
                     .toList(),
+                validator: (value) {
+                  if (value == null) {
+                    return MessageUtils.requiredError("Género");
+                  }
+                  widget.seller.genderId = value;
+                  return null;
+                },
               ),
               const SizedBox(
                 height: UIKitDimens.medium,
               ),
-              DropdownButtonFormField2(
-                decoration: InputDecoration(
-                  isDense: true,
-                  contentPadding: EdgeInsets.zero,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(UIKitDimens.medium),
-                  ),
-                  prefixIcon: const Icon(Icons.flag),
-                ),
-                isExpanded: true,
+              CustomDropdownFormField(
                 hint: const Text('Nacionalidad'),
-                buttonStyleData: const ButtonStyleData(
-                  height: 60,
-                  padding: EdgeInsets.only(left: 20, right: 10),
-                ),
+                prefixIcon: const Icon(Icons.flag),
                 onChanged: (value) {},
                 items: nationalities
                     .map(
-                      (item) => DropdownMenuItem<String>(
+                      (item) => DropdownMenuItem<int>(
                         value: item.id,
                         child: Text(item.name),
                       ),
                     )
                     .toList(),
+                validator: (value) {
+                  if (value == null) {
+                    return MessageUtils.requiredError("Nacionalidad");
+                  }
+                  widget.seller.nationalityId = value;
+                  return null;
+                },
               ),
               const SizedBox(
                 height: UIKitDimens.medium,
               ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Ciudad de trabajo',
-                  labelText: 'Ciudad de trabajo',
-                  prefixIcon: Icon(Icons.person_2),
-                  isDense: true,
-                  border: const OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromRGBO(208, 213, 221, 1),
-                      width: 1,
-                    ),
-                  ),
-                ),
+              CustomTextFormField(
+                hideText: false,
+                hintText: 'Ciudad de trabajo',
+                labelText: 'Ciudad de trabajo',
+                prefixIcon: const Icon(Icons.work),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return MessageUtils.requiredError("Ciudad de trabajo");
+                  }
+                  widget.seller.workCity = value;
+                  return null;
+                },
               ),
             ],
           );
         }
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return const CircularProgressIndicator();
       },
     );
   }
@@ -210,15 +186,22 @@ class _SignupPersonalDataPageState extends State<SignupPersonalDataPage> {
                   'Estos datos son privados para mejorar tu experiencia.'),
               Expanded(
                 flex: 1,
-                child: buildForm(),
+                child: Center(
+                  child: buildForm(),
+                ),
               ),
               PrimaryElevatedButton(
                 onPressed: () async {
                   setState(() {
                     isLoading = true;
                   });
-                  await Future.delayed(const Duration(seconds: 2));
-                  await goToSignupPhoneValidation();
+                  if (_formKey.currentState!.validate()) {
+                    if (widget.seller.type == SellerUtils.typeOwner) {
+                      await goToSignupSummary();
+                    } else {
+                      await goToPickReferral();
+                    }
+                  }
                   setState(() {
                     isLoading = false;
                   });
@@ -258,11 +241,33 @@ class _SignupPersonalDataPageState extends State<SignupPersonalDataPage> {
     Navigator.pop(context);
   }
 
-  goToSignupPhoneValidation() async {
+  goToSignupSummary() async {
+    final pup = Pup(
+      address: "",
+      latitude: 0,
+      longitude: 0,
+      createdAt: "",
+    );
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const SignupSummaryPage(),
+        builder: (context) => SignupSummaryPage(
+          session: widget.session,
+          seller: widget.seller,
+          pup: pup,
+        ),
+      ),
+    );
+  }
+
+  goToPickReferral() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignupPickReferralPage(
+          session: widget.session,
+          seller: widget.seller,
+        ),
       ),
     );
   }

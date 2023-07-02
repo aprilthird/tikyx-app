@@ -16,6 +16,7 @@ dependencies:
     path: ../domain
 
   supabase_flutter: ^1.10.1
+  cross_file: ^0.3.3+4
 
 dev_dependencies:
   flutter_test:

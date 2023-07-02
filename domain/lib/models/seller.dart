@@ -1,20 +1,30 @@
+import 'package:cross_file/cross_file.dart';
+import 'package:domain/models/gender.dart';
+import 'package:domain/models/nationality.dart';
+
 class Seller {
-  final int id;
-  final String name;
-  final String? profileImageUrl;
-  final int userId;
-  final int? referralId;
-  final String genderId;
-  final String nationalityId;
-  final String workCity;
-  final String type;
-  final String? idFrontImageUrl;
-  final String? idBackImageUrl;
-  final bool verified;
-  final String createdAt;
+  int? id;
+  String name;
+  String? profileImageUrl;
+  String userId;
+  int? referralId;
+  int genderId;
+  int nationalityId;
+  String workCity;
+  String type;
+  String? idFrontImageUrl;
+  String? idBackImageUrl;
+  bool? verified;
+  String? createdAt;
+  Gender? gender;
+  Nationality? nationality;
+
+  XFile? profileImageFile;
+  XFile? idFrontImageFile;
+  XFile? idBackImageFile;
 
   Seller({
-    required this.id,
+    this.id,
     required this.name,
     this.profileImageUrl,
     required this.userId,
@@ -25,12 +35,14 @@ class Seller {
     required this.type,
     this.idFrontImageUrl,
     this.idBackImageUrl,
-    required this.verified,
-    required this.createdAt,
+    this.verified,
+    this.createdAt,
+    this.gender,
+    this.nationality,
   });
 
   factory Seller.fromJson(Map<String, dynamic> json) {
-    return Seller(
+    final output = Seller(
       id: json['id'],
       name: json['name'],
       profileImageUrl: json['profile_image'],
@@ -45,5 +57,35 @@ class Seller {
       verified: json['verified'],
       createdAt: json['created_at'],
     );
+    // if (json['genre'] != null) {
+    //   output.gender = Gender(
+    //     id: json['genre']['id'],
+    //     name: json['genre']['name'],
+    //     createdAt: json['genre']['created_at'],
+    //   );
+    // }
+    // if (json['nationality'] != null) {
+    //   output.nationality = Nationality(
+    //     id: json['nationality']['id'],
+    //     name: json['nationality']['name'],
+    //     createdAt: json['nationality']['created_at'],
+    //   );
+    // }
+    return output;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'type': type,
+      'id_user': userId,
+      'genre': genderId,
+      'nationality': nationalityId,
+      'work_city': workCity,
+      'id_referral_of': referralId,
+      'profile_image': profileImageUrl,
+      'photo_id_front': idFrontImageUrl,
+      'photo_id_back': idBackImageUrl,
+    };
   }
 }

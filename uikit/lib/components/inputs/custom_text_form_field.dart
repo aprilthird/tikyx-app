@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:uikit/dimens/dimens.dart';
 
 // ignore: camel_case_extensions
 extension StringValidator on String {
@@ -36,6 +37,7 @@ class CustomTextFormField extends StatelessWidget {
     Key? key,
     this.inputFormattters,
     this.validator,
+    this.onChanged,
     this.labelText,
     this.hintText,
     this.prefixIcon,
@@ -47,6 +49,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? labelText;
   final List<TextInputFormatter>? inputFormattters;
   final String? Function(String?)? validator;
+  final void Function(String)? onChanged;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool hideText;
@@ -61,12 +64,13 @@ class CustomTextFormField extends StatelessWidget {
             height: 70,
             decoration: BoxDecoration(
               //color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(UIKitDimens.small),
             ),
             child: TextFormField(
               inputFormatters: inputFormattters,
               validator: validator,
               obscureText: hideText,
+              onChanged: onChanged,
               decoration: InputDecoration(
                 hintText: hintText,
                 labelText: labelText,
@@ -74,7 +78,7 @@ class CustomTextFormField extends StatelessWidget {
                 suffixIcon: suffixIcon,
                 isDense: true,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(UIKitDimens.small),
                   borderSide: const BorderSide(
                     color: Color.fromRGBO(208, 213, 221, 1),
                     width: 1,

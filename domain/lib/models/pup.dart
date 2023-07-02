@@ -1,19 +1,27 @@
+import 'package:cross_file/cross_file.dart';
+
 class Pup {
-  final int id;
-  final String ownerId;
-  final String address;
-  final double latitude;
-  final double longitude;
-  final String? authImageUrl;
-  final String? locationImage1Url;
-  final String? locationImage2Url;
-  final String? locationImage3Url;
-  final String? locationImage4Url;
-  final String createdAt;
+  int? id;
+  int? ownerId;
+  String address;
+  double latitude;
+  double longitude;
+  String? authImageUrl;
+  String? locationImage1Url;
+  String? locationImage2Url;
+  String? locationImage3Url;
+  String? locationImage4Url;
+  String? createdAt;
+
+  XFile? authImageFile;
+  XFile? locationImageFile1;
+  XFile? locationImageFile2;
+  XFile? locationImageFile3;
+  XFile? locationImageFile4;
 
   Pup({
-    required this.id,
-    required this.ownerId,
+    this.id,
+    this.ownerId,
     required this.address,
     required this.latitude,
     required this.longitude,
@@ -22,7 +30,7 @@ class Pup {
     this.locationImage2Url,
     this.locationImage3Url,
     this.locationImage4Url,
-    required this.createdAt,
+    this.createdAt,
   });
 
   factory Pup.fromJson(Map<String, dynamic> json) {
@@ -39,5 +47,19 @@ class Pup {
       locationImage4Url: json['photo_pup_4'],
       createdAt: json['created_at'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id_owner': ownerId,
+      'address': address,
+      'loc_lat': latitude,
+      'loc_long': longitude,
+      'photo_munic': authImageUrl,
+      'photo_pup_1': locationImage1Url,
+      'photo_pup_2': locationImage2Url,
+      'photo_pup_3': locationImage3Url,
+      'photo_pup_4': locationImage4Url,
+    };
   }
 }

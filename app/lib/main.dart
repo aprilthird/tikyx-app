@@ -1,12 +1,17 @@
 import 'package:app/layouts/default.dart';
 import 'package:app/pages/onboarding/on_boarding.dart';
+import 'package:app/pages/signup/signup_pick_location.dart';
 import 'package:app/pages/signup/signup_pick_role.dart';
+import 'package:domain/models/app_user.dart';
+import 'package:domain/models/pup.dart';
 import 'package:domain/models/session.dart';
-import 'package:domain/models/user.dart';
+import 'package:data/initializer/remote.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  RemoteInitializer.initialize();
+
   runApp(const MyApp());
 }
 
@@ -44,8 +49,23 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),
-      home: const OnBoardingPage(),
+      // home: SignupPickRolePage(
+      //   phoneNumber: "",
+      //   session: Session(
+      //     accessToken: "",
+      //     tokenType: "",
+      //     user: AppUser(id: "", aud: "", createdAt: ""),
+      //   ),
+      // ),
       //home: const DefaultLayout(title: 'Tikyx App'),
+      home: const OnBoardingPage(),
+      // home: SignupPickLocationPage(
+      //   pup: Pup(
+      //     address: "",
+      //     latitude: 0,
+      //     longitude: 0,
+      //   ),
+      // ),
     );
   }
 }

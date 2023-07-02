@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:domain/models/user.dart';
+import 'package:domain/models/app_user.dart';
 import 'package:domain/models/session.dart';
 import 'package:flutter/services.dart';
 import 'package:local/storage/token.dart';
@@ -19,7 +19,7 @@ class AuthRepository {
         tokenType: result.tokenType,
         providerToken: result.providerToken,
         providerRefreshToken: result.providerRefreshToken,
-        user: User(
+        user: AppUser(
           id: result.user.id,
           aud: result.user.aud,
           phoneNumber: result.user.phone,
@@ -37,9 +37,10 @@ class AuthRepository {
     }
   }
 
-  static Future<void> signIn(String phoneNumber) async {
+  static Future<bool> signIn(String phoneNumber) async {
     try {
       await AuthService.signIn(phoneNumber);
+      return true;
     } catch (e) {
       log(e.toString());
       rethrow;
@@ -57,7 +58,7 @@ class AuthRepository {
         tokenType: result.tokenType,
         providerToken: result.providerToken,
         providerRefreshToken: result.providerRefreshToken,
-        user: User(
+        user: AppUser(
           id: result.user.id,
           aud: result.user.aud,
           phoneNumber: result.user.phone,
@@ -75,10 +76,10 @@ class AuthRepository {
     }
   }
 
-  static Future<User> signUp(String phoneNumber) async {
+  static Future<AppUser> signUp(String phoneNumber) async {
     try {
       final result = await AuthService.signUp(phoneNumber);
-      return User(
+      return AppUser(
         id: result.id,
         aud: result.aud,
         createdAt: result.createdAt,
@@ -86,6 +87,15 @@ class AuthRepository {
         role: result.role,
         lastSignInAt: result.lastSignInAt,
       );
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<void> signOut() async {
+    try {
+      await AuthService.signOut();
     } catch (e) {
       log(e.toString());
       rethrow;
