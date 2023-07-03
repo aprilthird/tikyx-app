@@ -16,17 +16,10 @@ class OnBoardingPage extends StatefulWidget {
   State<OnBoardingPage> createState() => _OnBoardingPageState();
 }
 
-late Future googleFontsPending;
-
 class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   void initState() {
     super.initState();
-
-    googleFontsPending = GoogleFonts.pendingFonts([
-      GoogleFonts.poppins(),
-      GoogleFonts.montserrat(fontStyle: FontStyle.italic),
-    ]);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FileRepository.getBuckets();

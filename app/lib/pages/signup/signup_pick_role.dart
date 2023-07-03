@@ -37,7 +37,8 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
+        body: SafeArea(
+      child: Padding(
         padding: const EdgeInsets.all(UIKitDimens.medium),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -71,28 +72,35 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
                         : null,
                     child: Stack(
                       children: [
-                        const Row(
-                          children: [
-                            Image(
-                              image: AssetImage(
-                                  'assets/images/icon_role_vendor.png'),
-                            ),
-                            SizedBox(
-                              width: UIKitDimens.medium,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        Expanded(
+                            flex: 1,
+                            child: Row(
                               children: [
-                                Text(
-                                  'Tengo mi puesto',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                Image(
+                                  image: AssetImage(
+                                      'assets/images/icon_role_vendor.png'),
                                 ),
-                                Text(
-                                    'Esta es una descripción corta de máximo 2 líneas.'),
+                                SizedBox(
+                                  width: UIKitDimens.medium,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Tengo mi puesto',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      'Esta es una descripción corta de máximo 2 líneas.',
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 2,
+                                      softWrap: false,
+                                    ),
+                                  ],
+                                ),
                               ],
-                            ),
-                          ],
-                        ),
+                            )),
                         if (roleSelected == SellerUtils.typeOwner) ...[
                           selectedCheck()
                         ],
@@ -154,7 +162,7 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   goToSignupPersonalData() async {
