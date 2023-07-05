@@ -150,122 +150,125 @@ class _SignupPickReferralPageState extends State<SignupPickReferralPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(UIKitDimens.medium),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Registro de referido',
-              style: TextStyle(
-                fontSize: UIKitDimens.large,
-                fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(UIKitDimens.medium),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Registro de referido',
+                style: TextStyle(
+                  fontSize: UIKitDimens.large,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            const Text('Estos datos son privados para mejorar tu experiencia.'),
-            const SizedBox(
-              height: UIKitDimens.extraLarge,
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Buscar por nombre o nro. de WhatsApp',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: UIKitDimens.medium,
-                  ),
-                  CustomTypeAheadFormField(
-                    controller: _autocompleteController,
-                    hintText: 'Buscar un referido...',
-                    suffixIcon: const Icon(Icons.search),
-                    minCharsForSuggestions: 1,
-                    suggestionsCallback: (search) async {
-                      return await SellerRepository.searchByName(search);
-                    },
-                    itemBuilder: (context, suggestion) {
-                      return ListTile(
-                        leading: const Icon(Icons.person_pin_rounded),
-                        title: Text(suggestion!.name),
-                        subtitle: Text(suggestion.workCity),
-                      );
-                    },
-                    onSuggestionSelected: (suggestion) async {
-                      setState(() {
-                        _autocompleteController.text = suggestion!.name;
-                        _selectedReferral = suggestion;
-                      });
-                      widget.seller.referralId = suggestion!.id;
-                    },
-                    noItemsFoundBuilder: (context) {
-                      return const Padding(
-                        padding: EdgeInsets.all(UIKitDimens.small),
-                        child: Text(
-                          'Ningún resultado encontrado.',
-                          style: TextStyle(
-                            fontSize: UIKitDimens.medium,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  if (_selectedReferral != null) ...[
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              const Text(
+                  'Estos datos son privados para mejorar tu experiencia.'),
+              const SizedBox(
+                height: UIKitDimens.extraLarge,
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Buscar por nombre o nro. de WhatsApp',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     const SizedBox(
                       height: UIKitDimens.medium,
                     ),
-                    selectedReferralCard(),
-                  ],
-                ],
-              ),
-            ),
-            PrimaryElevatedButton(
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                if (widget.seller.referralId != null) {
-                  await goToSignupSummary();
-                }
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              isFullWidth: true,
-              child: widget.seller.referralId == null
-                  ? const Text('Selecciona un referido')
-                  : isLoading
-                      ? const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            PrimaryButtonLoader(),
-                            SizedBox(
-                              width: UIKitDimens.small,
+                    CustomTypeAheadFormField(
+                      controller: _autocompleteController,
+                      hintText: 'Buscar un referido...',
+                      suffixIcon: const Icon(Icons.search),
+                      minCharsForSuggestions: 1,
+                      suggestionsCallback: (search) async {
+                        return await SellerRepository.searchByName(search);
+                      },
+                      itemBuilder: (context, suggestion) {
+                        return ListTile(
+                          leading: const Icon(Icons.person_pin_rounded),
+                          title: Text(suggestion!.name),
+                          subtitle: Text(suggestion.workCity),
+                        );
+                      },
+                      onSuggestionSelected: (suggestion) async {
+                        setState(() {
+                          _autocompleteController.text = suggestion!.name;
+                          _selectedReferral = suggestion;
+                        });
+                        widget.seller.referralId = suggestion!.id;
+                      },
+                      noItemsFoundBuilder: (context) {
+                        return const Padding(
+                          padding: EdgeInsets.all(UIKitDimens.small),
+                          child: Text(
+                            'Ningún resultado encontrado.',
+                            style: TextStyle(
+                              fontSize: UIKitDimens.medium,
+                              fontStyle: FontStyle.italic,
                             ),
-                            Text('Guardando'),
-                          ],
-                        )
-                      : const Text('Continuar'),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            GreyElevatedButton(
-              onPressed: () {
-                goBack();
-              },
-              isFullWidth: true,
-              child: const Text('Cancelar'),
-            ),
-          ],
+                          ),
+                        );
+                      },
+                    ),
+                    if (_selectedReferral != null) ...[
+                      const SizedBox(
+                        height: UIKitDimens.medium,
+                      ),
+                      selectedReferralCard(),
+                    ],
+                  ],
+                ),
+              ),
+              PrimaryElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  if (widget.seller.referralId != null) {
+                    await goToSignupSummary();
+                  }
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                isFullWidth: true,
+                child: widget.seller.referralId == null
+                    ? const Text('Selecciona un referido')
+                    : isLoading
+                        ? const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              PrimaryButtonLoader(),
+                              SizedBox(
+                                width: UIKitDimens.small,
+                              ),
+                              Text('Guardando'),
+                            ],
+                          )
+                        : const Text('Continuar'),
+              ),
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              GreyElevatedButton(
+                onPressed: () {
+                  goBack();
+                },
+                isFullWidth: true,
+                child: const Text('Cancelar'),
+              ),
+            ],
+          ),
         ),
       ),
     );

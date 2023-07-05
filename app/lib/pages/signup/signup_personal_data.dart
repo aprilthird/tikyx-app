@@ -164,73 +164,75 @@ class _SignupPersonalDataPageState extends State<SignupPersonalDataPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: const EdgeInsets.all(UIKitDimens.medium),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Información personal',
-                style: TextStyle(
-                  fontSize: UIKitDimens.large,
-                  fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(UIKitDimens.medium),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Información personal',
+                  style: TextStyle(
+                    fontSize: UIKitDimens.large,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: UIKitDimens.medium,
-              ),
-              const Text(
-                  'Estos datos son privados para mejorar tu experiencia.'),
-              Expanded(
-                flex: 1,
-                child: Center(
-                  child: buildForm(),
+                const SizedBox(
+                  height: UIKitDimens.medium,
                 ),
-              ),
-              PrimaryElevatedButton(
-                onPressed: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  if (_formKey.currentState!.validate()) {
-                    if (widget.seller.type == SellerUtils.typeOwner) {
-                      await goToSignupSummary();
-                    } else {
-                      await goToPickReferral();
+                const Text(
+                    'Estos datos son privados para mejorar tu experiencia.'),
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: buildForm(),
+                  ),
+                ),
+                PrimaryElevatedButton(
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    if (_formKey.currentState!.validate()) {
+                      if (widget.seller.type == SellerUtils.typeOwner) {
+                        await goToSignupSummary();
+                      } else {
+                        await goToPickReferral();
+                      }
                     }
-                  }
-                  setState(() {
-                    isLoading = false;
-                  });
-                },
-                isFullWidth: true,
-                child: isLoading
-                    ? const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          PrimaryButtonLoader(),
-                          SizedBox(
-                            width: UIKitDimens.small,
-                          ),
-                          Text('Guardando'),
-                        ],
-                      )
-                    : const Text('Continuar'),
-              ),
-              const SizedBox(
-                height: UIKitDimens.medium,
-              ),
-              GreyElevatedButton(
-                onPressed: () {
-                  goBack();
-                },
-                isFullWidth: true,
-                child: const Text('Cancelar'),
-              ),
-            ],
+                    setState(() {
+                      isLoading = false;
+                    });
+                  },
+                  isFullWidth: true,
+                  child: isLoading
+                      ? const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            PrimaryButtonLoader(),
+                            SizedBox(
+                              width: UIKitDimens.small,
+                            ),
+                            Text('Guardando'),
+                          ],
+                        )
+                      : const Text('Continuar'),
+                ),
+                const SizedBox(
+                  height: UIKitDimens.medium,
+                ),
+                GreyElevatedButton(
+                  onPressed: () {
+                    goBack();
+                  },
+                  isFullWidth: true,
+                  child: const Text('Cancelar'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,3 +1,3 @@
 class EnvironmentUtils {
-  static const bool isDevelopment = true;
+  static const bool isDevelopment = false;
 }

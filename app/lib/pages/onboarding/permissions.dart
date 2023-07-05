@@ -19,121 +19,123 @@ class _PermissionsPageState extends State<PermissionsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(UIKitDimens.medium),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Image(
-              alignment: Alignment.center,
-              image: AssetImage('assets/images/icon_permission.png'),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Aviso de Privacidad',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: UIKitFontSize.extraLarge,
-                  fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(UIKitDimens.medium),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Image(
+                alignment: Alignment.center,
+                image: AssetImage('assets/images/icon_permission.png'),
+              ),
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Aviso de Privacidad',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: UIKitFontSize.extraLarge,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: UIKitDimens.small,
-            ),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Tikyx socio necesita los siguientes permisos:',
-                textAlign: TextAlign.start,
-                style: TextStyle(
-                  fontSize: UIKitFontSize.large,
-                  fontWeight: FontWeight.bold,
+              const SizedBox(
+                height: UIKitDimens.small,
+              ),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Tikyx socio necesita los siguientes permisos:',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: UIKitFontSize.large,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            const Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ShadowCard(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.location_on_outlined),
-                            SizedBox(
-                              width: UIKitDimens.small,
-                            ),
-                            Text(
-                              'Ubicación',
-                              style: TextStyle(
-                                fontSize: UIKitFontSize.large,
-                                fontWeight: FontWeight.bold,
+              const Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ShadowCard(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.location_on_outlined),
+                              SizedBox(
+                                width: UIKitDimens.small,
                               ),
-                            )
-                          ],
-                        ),
-                        Text(
-                          'Optimiza el registro e inicio de sesión, ayuda a obtener el punto de encuentro/destino, a calcular tarifas y monitorear la seguridad. Para una mejor experiencia, selecciona "Permitir siempre".',
-                          style: TextStyle(
-                            fontSize: UIKitFontSize.large,
+                              Text(
+                                'Ubicación',
+                                style: TextStyle(
+                                  fontSize: UIKitFontSize.large,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ShadowCard(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.mobile_friendly),
-                            SizedBox(
-                              width: UIKitDimens.small,
+                          Text(
+                            'Optimiza el registro e inicio de sesión, ayuda a obtener el punto de encuentro/destino, a calcular tarifas y monitorear la seguridad. Para una mejor experiencia, selecciona "Permitir siempre".',
+                            style: TextStyle(
+                              fontSize: UIKitFontSize.large,
                             ),
-                            Text(
-                              'Información del dispositivo',
-                              style: TextStyle(
-                                fontSize: UIKitFontSize.large,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )
-                          ],
-                        ),
-                        Text(
-                          'Ayuda a realizar y gestionar llamadas y permite a la plataforma brindar servicios como la administración de tu cuenta y al prevención de fraude.',
-                          style: TextStyle(
-                            fontSize: UIKitFontSize.large,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    ShadowCard(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.mobile_friendly),
+                              SizedBox(
+                                width: UIKitDimens.small,
+                              ),
+                              Text(
+                                'Información del dispositivo',
+                                style: TextStyle(
+                                  fontSize: UIKitFontSize.large,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                          Text(
+                            'Ayuda a realizar y gestionar llamadas y permite a la plataforma brindar servicios como la administración de tu cuenta y al prevención de fraude.',
+                            style: TextStyle(
+                              fontSize: UIKitFontSize.large,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            PrimaryElevatedButton(
-              onPressed: () {
-                grantPermissions();
-              },
-              isFullWidth: true,
-              child: const Text('Permitir'),
-            ),
-            const SizedBox(
-              height: UIKitDimens.small,
-            ),
-            GreyElevatedButton(
-              onPressed: () => goBack(),
-              isFullWidth: true,
-              child: const Text('No permitir y salir'),
-            )
-          ],
+              PrimaryElevatedButton(
+                onPressed: () {
+                  grantPermissions();
+                },
+                isFullWidth: true,
+                child: const Text('Permitir'),
+              ),
+              const SizedBox(
+                height: UIKitDimens.small,
+              ),
+              GreyElevatedButton(
+                onPressed: () => goBack(),
+                isFullWidth: true,
+                child: const Text('No permitir y salir'),
+              )
+            ],
+          ),
         ),
       ),
     );

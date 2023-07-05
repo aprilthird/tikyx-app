@@ -37,53 +37,52 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(UIKitDimens.medium),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Selecciona una acción',
-              style: TextStyle(
-                fontSize: UIKitDimens.large,
-                fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(UIKitDimens.medium),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Selecciona una acción',
+                style: TextStyle(
+                  fontSize: UIKitDimens.large,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            const Text(
-                'Selecciona la opción que más se ajusta a tu requerimiento dentro de nuestra plataforma.'),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ShadowCard(
-                    onPressed: () {
-                      setState(() {
-                        roleSelected = SellerUtils.typeOwner;
-                      });
-                    },
-                    borderColor: roleSelected == SellerUtils.typeOwner
-                        ? Theme.of(context).primaryColor
-                        : null,
-                    child: Stack(
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: Row(
-                              children: [
-                                Image(
-                                  image: AssetImage(
-                                      'assets/images/icon_role_vendor.png'),
-                                ),
-                                SizedBox(
-                                  width: UIKitDimens.medium,
-                                ),
-                                Column(
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              const Text(
+                  'Selecciona la opción que más se ajusta a tu requerimiento dentro de nuestra plataforma.'),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ShadowCard(
+                      onPressed: () {
+                        setState(() {
+                          roleSelected = SellerUtils.typeOwner;
+                        });
+                      },
+                      borderColor: roleSelected == SellerUtils.typeOwner
+                          ? Theme.of(context).primaryColor
+                          : null,
+                      child: Stack(
+                        children: [
+                          const Row(
+                            children: [
+                              Image(
+                                image: AssetImage(
+                                    'assets/images/icon_role_vendor.png'),
+                              ),
+                              SizedBox(
+                                width: UIKitDimens.medium,
+                              ),
+                              Expanded(
+                                child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
@@ -95,74 +94,84 @@ class _SignupPickRolePageState extends State<SignupPickRolePage> {
                                       'Esta es una descripción corta de máximo 2 líneas.',
                                       overflow: TextOverflow.fade,
                                       maxLines: 2,
-                                      softWrap: false,
+                                      softWrap: true,
                                     ),
                                   ],
                                 ),
-                              ],
-                            )),
-                        if (roleSelected == SellerUtils.typeOwner) ...[
-                          selectedCheck()
-                        ],
-                      ],
-                    ),
-                  ),
-                  ShadowCard(
-                    onPressed: () {
-                      setState(() {
-                        roleSelected = SellerUtils.typeReferral;
-                      });
-                    },
-                    borderColor: roleSelected == SellerUtils.typeReferral
-                        ? Theme.of(context).primaryColor
-                        : null,
-                    child: Stack(
-                      children: [
-                        const Row(
-                          children: [
-                            Image(
-                              image: AssetImage(
-                                  'assets/images/icon_role_subscriber.png'),
-                            ),
-                            SizedBox(
-                              width: UIKitDimens.medium,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Subscribirme a un puesto',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                    'Esta es una descripción corta de máximo 2 líneas.'),
-                              ],
-                            ),
+                              ),
+                            ],
+                          ),
+                          if (roleSelected == SellerUtils.typeOwner) ...[
+                            selectedCheck()
                           ],
-                        ),
-                        if (roleSelected == SellerUtils.typeReferral) ...[
-                          selectedCheck()
                         ],
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                    ShadowCard(
+                      onPressed: () {
+                        setState(() {
+                          roleSelected = SellerUtils.typeReferral;
+                        });
+                      },
+                      borderColor: roleSelected == SellerUtils.typeReferral
+                          ? Theme.of(context).primaryColor
+                          : null,
+                      child: Stack(
+                        children: [
+                          const Row(
+                            children: [
+                              Image(
+                                image: AssetImage(
+                                    'assets/images/icon_role_subscriber.png'),
+                              ),
+                              SizedBox(
+                                width: UIKitDimens.medium,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Subscribirme a un puesto',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      'Esta es una descripción corta de máximo 2 líneas.',
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 2,
+                                      softWrap: true,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (roleSelected == SellerUtils.typeReferral) ...[
+                            selectedCheck()
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            PrimaryElevatedButton(
-              onPressed: () {
-                if (roleSelected.isNotEmpty) {
-                  goToSignupPersonalData();
-                }
-              },
-              isFullWidth: true,
-              child: Text(
-                  roleSelected.isEmpty ? 'Selecciona una acción' : 'Continuar'),
-            ),
-          ],
+              PrimaryElevatedButton(
+                onPressed: () {
+                  if (roleSelected.isNotEmpty) {
+                    goToSignupPersonalData();
+                  }
+                },
+                isFullWidth: true,
+                child: Text(roleSelected.isEmpty
+                    ? 'Selecciona una acción'
+                    : 'Continuar'),
+              ),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   goToSignupPersonalData() async {

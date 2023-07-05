@@ -5,6 +5,7 @@ import 'package:uikit/dimens/dimens.dart';
 class CustomDropdownFormField<T> extends StatelessWidget {
   const CustomDropdownFormField({
     Key? key,
+    this.value,
     this.validator,
     this.onChanged,
     this.hint,
@@ -13,6 +14,7 @@ class CustomDropdownFormField<T> extends StatelessWidget {
     this.items,
   }) : super(key: key);
 
+  final T? value;
   final Widget? hint;
   final String? Function(T?)? validator;
   final Widget? prefixIcon;
@@ -23,6 +25,7 @@ class CustomDropdownFormField<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField2<T>(
+      value: value,
       decoration: InputDecoration(
         isDense: true,
         contentPadding: EdgeInsets.zero,

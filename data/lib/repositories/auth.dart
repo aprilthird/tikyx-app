@@ -1,10 +1,10 @@
 import 'dart:developer';
 
+import 'package:data/repositories/seller.dart';
 import 'package:domain/models/app_user.dart';
 import 'package:domain/models/session.dart';
 import 'package:flutter/services.dart';
-import 'package:local/storage/token.dart';
-import 'package:local/storage/user.dart';
+import 'package:local/storage/session.dart';
 import 'package:remote/services/auth.dart';
 
 class AuthRepository {
@@ -28,8 +28,8 @@ class AuthRepository {
           createdAt: result.user.createdAt,
         ),
       );
-      await TokenStorage.saveAccessToken(session.accessToken);
-      await UserStorage.saveCurrentUser(session.user);
+      await SessionStorage.saveCurrentSession(session);
+      await SellerRepository.getBySignedUserId(session.user.id);
       return session;
     } catch (e) {
       log(e.toString());
@@ -67,8 +67,7 @@ class AuthRepository {
           createdAt: result.user.createdAt,
         ),
       );
-      await TokenStorage.saveAccessToken(session.accessToken);
-      await UserStorage.saveCurrentUser(session.user);
+      await SessionStorage.saveCurrentSession(session);
       return session;
     } catch (e) {
       log(e.toString());
@@ -96,6 +95,16 @@ class AuthRepository {
   static Future<void> signOut() async {
     try {
       await AuthService.signOut();
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  static Future<Session?> getCurrentSession() async {
+    try {
+      final session = SessionStorage.getCurrentSession();
+      return session;
     } catch (e) {
       log(e.toString());
       rethrow;

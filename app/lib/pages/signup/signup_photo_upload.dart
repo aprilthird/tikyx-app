@@ -57,7 +57,7 @@ class _SignupPhotoUploadPageState extends State<SignupPhotoUploadPage> {
             : Image.file(File(imageFile!.path));
       }
       return const Image(
-        image: AssetImage('assets/images/placeholder_user.jpg'),
+        image: AssetImage('assets/images/placeholder_user.png'),
       );
     }
     return const CircularProgressIndicator();
@@ -66,94 +66,96 @@ class _SignupPhotoUploadPageState extends State<SignupPhotoUploadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(UIKitDimens.medium),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Foto de perfil',
-              style: TextStyle(
-                fontSize: UIKitDimens.large,
-                fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(UIKitDimens.medium),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Foto de perfil',
+                style: TextStyle(
+                  fontSize: UIKitDimens.large,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 400,
-                    alignment: Alignment.center,
-                    child: buildSelectedImage(),
-                  ),
-                  const SizedBox(
-                    height: UIKitDimens.medium,
-                  ),
-                  WhiteElevatedButton(
-                    onPressed: () {
-                      pickImage();
-                    },
-                    isFullWidth: true,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.camera_alt,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        const SizedBox(
-                          width: UIKitDimens.medium,
-                        ),
-                        const Text('Seleccionar foto')
-                      ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 400,
+                      alignment: Alignment.center,
+                      child: buildSelectedImage(),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: UIKitDimens.medium,
+                    ),
+                    WhiteElevatedButton(
+                      onPressed: () {
+                        pickImage();
+                      },
+                      isFullWidth: true,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          const SizedBox(
+                            width: UIKitDimens.medium,
+                          ),
+                          const Text('Seleccionar foto')
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            PrimaryElevatedButton(
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                if (imageFile != null) {
-                  goBackAndSave();
-                }
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              isFullWidth: true,
-              child: imageFile == null
-                  ? const Text('Selecciona una imagen')
-                  : isLoading
-                      ? const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            PrimaryButtonLoader(),
-                            SizedBox(
-                              width: UIKitDimens.small,
-                            ),
-                            Text('Enviando'),
-                          ],
-                        )
-                      : const Text('Enviar y continuar'),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            GreyElevatedButton(
-              onPressed: () {
-                goBack();
-              },
-              isFullWidth: true,
-              child: const Text('Cancelar'),
-            ),
-          ],
+              PrimaryElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  if (imageFile != null) {
+                    goBackAndSave();
+                  }
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                isFullWidth: true,
+                child: imageFile == null
+                    ? const Text('Selecciona una imagen')
+                    : isLoading
+                        ? const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              PrimaryButtonLoader(),
+                              SizedBox(
+                                width: UIKitDimens.small,
+                              ),
+                              Text('Enviando'),
+                            ],
+                          )
+                        : const Text('Enviar y continuar'),
+              ),
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              GreyElevatedButton(
+                onPressed: () {
+                  goBack();
+                },
+                isFullWidth: true,
+                child: const Text('Cancelar'),
+              ),
+            ],
+          ),
         ),
       ),
     );

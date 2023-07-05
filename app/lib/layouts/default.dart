@@ -6,6 +6,10 @@ import 'package:app/pages/packing/packing.dart';
 import 'package:app/pages/referrals/referrals.dart';
 import 'package:app/pages/settings/settings.dart';
 import 'package:app/pages/usersettings/user_settings.dart';
+import 'package:data/repositories/auth.dart';
+import 'package:data/repositories/seller.dart';
+import 'package:domain/models/seller.dart';
+import 'package:domain/models/session.dart';
 import 'package:flutter/material.dart';
 import 'package:uikit/components/scaffold/default_scaffold.dart';
 import 'package:uikit/structs/menu_item.dart';
@@ -20,6 +24,13 @@ class DefaultLayout extends StatefulWidget {
 class _DefaultLayoutState extends State<DefaultLayout> {
   var currentTitle = '';
   var currentId = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +57,31 @@ class _DefaultLayoutState extends State<DefaultLayout> {
       onTapQuitButton: () {
         goToOnBoarding();
       },
-      body: currentPage(),
+      body: SafeArea(
+        child: Center(
+          child: FutureBuilder(
+            future: Future.wait([
+              AuthRepository.getCurrentSession(),
+              SellerRepository.getCurrentSeller()
+            ]),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var session = snapshot.requireData[0] as Session;
+                var seller = snapshot.requireData[1] as Seller;
+                return currentPage(session, seller);
+              }
+              return const CircularProgressIndicator();
+            },
+          ),
+        ),
+      ),
     );
   }
 
-  Widget currentPage() {
+  Widget currentPage(Session session, Seller seller) {
     switch (currentId) {
       case 0:
-        return const OrdersSummaryPage();
+        return OrdersSummaryPage(session: session, seller: seller);
       case 1:
         return const BalancePage();
       case 2:
@@ -63,11 +91,11 @@ class _DefaultLayoutState extends State<DefaultLayout> {
       case 4:
         return const PackingPage();
       case 5:
-        return const SettingsPage();
+        return SettingsPage(session: session, seller: seller);
       case 6:
         return const UserSettingsPage();
       default:
-        return const OrdersSummaryPage();
+        return OrdersSummaryPage(session: session, seller: seller);
     }
   }
 

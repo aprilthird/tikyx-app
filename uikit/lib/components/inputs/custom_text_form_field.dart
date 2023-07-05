@@ -35,6 +35,7 @@ extension StringValidator on String {
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     Key? key,
+    this.initialValue,
     this.inputFormattters,
     this.validator,
     this.onChanged,
@@ -45,6 +46,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.hideText,
   }) : super(key: key);
 
+  final String? initialValue;
   final String? hintText;
   final String? labelText;
   final List<TextInputFormatter>? inputFormattters;
@@ -67,6 +69,7 @@ class CustomTextFormField extends StatelessWidget {
               borderRadius: BorderRadius.circular(UIKitDimens.small),
             ),
             child: TextFormField(
+              initialValue: initialValue,
               inputFormatters: inputFormattters,
               validator: validator,
               obscureText: hideText,

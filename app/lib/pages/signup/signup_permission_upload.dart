@@ -72,104 +72,106 @@ class _SignupPermissionUploadPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(UIKitDimens.medium),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Autorización Municipal',
-              style: TextStyle(
-                fontSize: UIKitDimens.large,
-                fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(UIKitDimens.medium),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Autorización Municipal',
+                style: TextStyle(
+                  fontSize: UIKitDimens.large,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 250,
-                    alignment: Alignment.center,
-                    child: buildSelectedImage(),
-                  ),
-                  const SizedBox(
-                    height: UIKitDimens.medium,
-                  ),
-                  WhiteElevatedButton(
-                    onPressed: () {
-                      pickImage();
-                    },
-                    isFullWidth: true,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.camera_alt,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        const SizedBox(
-                          width: UIKitDimens.medium,
-                        ),
-                        const Text('Seleccionar foto')
-                      ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 250,
+                      alignment: Alignment.center,
+                      child: buildSelectedImage(),
                     ),
-                  ),
-                  const SizedBox(
-                    height: UIKitDimens.large,
-                  ),
-                  const Text(
-                      '1. La fotografía debe ser clara y legible. Todas las esquinas del documento deben ser visibles.'),
-                  const Text(
-                      '2. Podés subir la Constancia de Seguro, Certificado de Cobertura o Frente de Póliza.'),
-                  const Text(
-                      '3. Asegúrate de que los datos coincidan con los ingresados en la cédula del vehículo.'),
-                  const Text('4. Asegúrate que el documento esté vigente.'),
-                ],
+                    const SizedBox(
+                      height: UIKitDimens.medium,
+                    ),
+                    WhiteElevatedButton(
+                      onPressed: () {
+                        pickImage();
+                      },
+                      isFullWidth: true,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          const SizedBox(
+                            width: UIKitDimens.medium,
+                          ),
+                          const Text('Seleccionar foto')
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: UIKitDimens.large,
+                    ),
+                    const Text(
+                        '1. La fotografía debe ser clara y legible. Todas las esquinas del documento deben ser visibles.'),
+                    const Text(
+                        '2. Podés subir la Constancia de Seguro, Certificado de Cobertura o Frente de Póliza.'),
+                    const Text(
+                        '3. Asegúrate de que los datos coincidan con los ingresados en la cédula del vehículo.'),
+                    const Text('4. Asegúrate que el documento esté vigente.'),
+                  ],
+                ),
               ),
-            ),
-            PrimaryElevatedButton(
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                if (imageFile != null) {
-                  goBackAndSave();
-                }
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              isFullWidth: true,
-              child: imageFile == null
-                  ? const Text('Selecciona una imagen')
-                  : isLoading
-                      ? const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            PrimaryButtonLoader(),
-                            SizedBox(
-                              width: UIKitDimens.small,
-                            ),
-                            Text('Enviando'),
-                          ],
-                        )
-                      : const Text('Enviar y continuar'),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            GreyElevatedButton(
-              onPressed: () {
-                goBack();
-              },
-              isFullWidth: true,
-              child: const Text('Cancelar'),
-            ),
-          ],
+              PrimaryElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  if (imageFile != null) {
+                    goBackAndSave();
+                  }
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                isFullWidth: true,
+                child: imageFile == null
+                    ? const Text('Selecciona una imagen')
+                    : isLoading
+                        ? const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              PrimaryButtonLoader(),
+                              SizedBox(
+                                width: UIKitDimens.small,
+                              ),
+                              Text('Enviando'),
+                            ],
+                          )
+                        : const Text('Enviar y continuar'),
+              ),
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              GreyElevatedButton(
+                onPressed: () {
+                  goBack();
+                },
+                isFullWidth: true,
+                child: const Text('Cancelar'),
+              ),
+            ],
+          ),
         ),
       ),
     );

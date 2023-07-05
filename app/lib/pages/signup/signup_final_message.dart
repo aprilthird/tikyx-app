@@ -17,70 +17,72 @@ class _SignupFinalMessagePagetate extends State<SignupFinalMessagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(UIKitDimens.medium),
-        child: Column(
-          children: [
-            const Text(
-              'Registro de usuario',
-              style: TextStyle(
-                fontSize: UIKitFontSize.large,
-                fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(UIKitDimens.medium),
+          child: Column(
+            children: [
+              const Text(
+                'Registro de usuario',
+                style: TextStyle(
+                  fontSize: UIKitFontSize.large,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Image(
-                    image: AssetImage('assets/images/icon_register_sent.png'),
-                  ),
-                  const SizedBox(
-                    height: UIKitDimens.medium,
-                  ),
-                  const Text(
-                    'Tu información fue recibida!',
-                    style: TextStyle(
-                      fontSize: UIKitFontSize.large,
-                      fontWeight: FontWeight.bold,
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              const Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image(
+                      image: AssetImage('assets/images/icon_register_sent.png'),
                     ),
+                    SizedBox(
+                      height: UIKitDimens.medium,
+                    ),
+                    Text(
+                      'Tu información fue recibida!',
+                      style: TextStyle(
+                        fontSize: UIKitFontSize.large,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: UIKitDimens.medium,
+                    ),
+                    Text(
+                      'Será validada por los administradores y será notificado cuando sea aprobado',
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  PrimaryElevatedButton(
+                    onPressed: () {
+                      goToLogin();
+                    },
+                    isFullWidth: true,
+                    child: const Text('Confirmar'),
                   ),
                   const SizedBox(
                     height: UIKitDimens.medium,
                   ),
-                  const Text(
-                    'Será validada por los administradores y será notificado cuando sea aprobado',
+                  GreyElevatedButton(
+                    onPressed: () {
+                      goBack();
+                    },
+                    isFullWidth: true,
+                    child: const Text('Cancelar'),
                   ),
                 ],
-              ),
-            ),
-            Column(
-              children: [
-                PrimaryElevatedButton(
-                  onPressed: () {
-                    goToLogin();
-                  },
-                  isFullWidth: true,
-                  child: Text('Confirmar'),
-                ),
-                const SizedBox(
-                  height: UIKitDimens.medium,
-                ),
-                GreyElevatedButton(
-                  onPressed: () {
-                    goBack();
-                  },
-                  isFullWidth: true,
-                  child: Text('Cancelar'),
-                ),
-              ],
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

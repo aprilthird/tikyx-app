@@ -186,232 +186,237 @@ class _SignupPickLocationPageState extends State<SignupPickLocationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(UIKitDimens.medium),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Agregando punto',
-              style: TextStyle(
-                fontSize: UIKitDimens.large,
-                fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(UIKitDimens.medium),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Agregando punto',
+                style: TextStyle(
+                  fontSize: UIKitDimens.large,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            const Text(
-                'Debes agregar la dirección exacta y una foto del punto.'),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            Expanded(
-              flex: 1,
-              child: Stack(
-                children: [
-                  GoogleMap(
-                    markers: _markers,
-                    mapType: MapType.normal,
-                    initialCameraPosition: CameraPosition(
-                      target: _position,
-                      zoom: defaultZoom,
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              const Text(
+                  'Debes agregar la dirección exacta y una foto del punto.'),
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              Expanded(
+                flex: 1,
+                child: Stack(
+                  children: [
+                    GoogleMap(
+                      markers: _markers,
+                      mapType: MapType.normal,
+                      initialCameraPosition: CameraPosition(
+                        target: _position,
+                        zoom: defaultZoom,
+                      ),
+                      onMapCreated: (GoogleMapController controller) async {
+                        _controller.complete(controller);
+                        final ctrl = await _controller.future;
+                        ctrl.moveCamera(CameraUpdate.newLatLng(_position));
+                      },
+                      onCameraIdle: () {},
+                      onTap: (argument) {
+                        addMarker(argument);
+                        setState(() {
+                          _position = argument;
+                        });
+                      },
                     ),
-                    onMapCreated: (GoogleMapController controller) async {
-                      _controller.complete(controller);
-                      final ctrl = await _controller.future;
-                      ctrl.moveCamera(CameraUpdate.newLatLng(_position));
-                    },
-                    onCameraIdle: () {},
-                    onTap: (argument) {
-                      addMarker(argument);
-                      setState(() {
-                        _position = argument;
-                      });
-                    },
-                  ),
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.all(UIKitDimens.small),
-                      child: CustomTypeAheadFormField(
-                        controller: _autocompleteController,
-                        hintText: 'Buscar una dirección...',
-                        suffixIcon: const Icon(Icons.search),
-                        minCharsForSuggestions: 5,
-                        filled: true,
-                        fillColor: Colors.white,
-                        suggestionsCallback: (search) async {
-                          if (search.isNotEmpty) {
-                            if (search != widget.pup.address) {
-                              return await MapRepository.getAutocompletePlaces(
-                                  search);
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.all(UIKitDimens.small),
+                        child: CustomTypeAheadFormField(
+                          controller: _autocompleteController,
+                          hintText: 'Buscar una dirección...',
+                          suffixIcon: const Icon(Icons.search),
+                          minCharsForSuggestions: 5,
+                          filled: true,
+                          fillColor: Colors.white,
+                          suggestionsCallback: (search) async {
+                            if (search.isNotEmpty) {
+                              if (search != widget.pup.address) {
+                                return await MapRepository
+                                    .getAutocompletePlaces(search);
+                              }
                             }
-                          }
-                          return [];
-                        },
-                        itemBuilder: (context, suggestion) {
-                          return ListTile(
-                            leading: const Icon(Icons.location_pin),
-                            title: Text(suggestion!.mainText),
-                            subtitle: Text(suggestion.secondaryText),
-                          );
-                        },
-                        onSuggestionSelected: (suggestion) async {
-                          setState(() {
-                            _autocompleteController.text =
-                                suggestion!.description;
-                          });
-                          widget.pup.address = suggestion!.description;
-                          final placeDetails =
-                              await MapRepository.getPlaceDetails(
-                                  suggestion!.placeId);
-                          if (placeDetails != null) {
+                            return [];
+                          },
+                          itemBuilder: (context, suggestion) {
+                            return ListTile(
+                              leading: const Icon(Icons.location_pin),
+                              title: Text(suggestion!.mainText),
+                              subtitle: Text(suggestion.secondaryText),
+                            );
+                          },
+                          onSuggestionSelected: (suggestion) async {
                             setState(() {
-                              _position = LatLng(placeDetails.locationLatitude,
-                                  placeDetails.locationLongitude);
+                              _autocompleteController.text =
+                                  suggestion!.description;
                             });
-                            final ctrl = await _controller.future;
-                            ctrl.moveCamera(CameraUpdate.newLatLng(_position));
-                            addMarker(_position);
-                          }
-                        },
-                        noItemsFoundBuilder: (context) {
-                          if (widget.pup.address.isEmpty) {
-                            return const SizedBox(height: UIKitDimens.small);
-                          }
-                          return Padding(
-                            padding: const EdgeInsets.all(UIKitDimens.small),
-                            child: Text(
-                              _autocompleteController.text == widget.pup.address
-                                  ? 'Ingresa una dirección'
-                                  : 'Ningún resultado encontrado.',
-                              style: const TextStyle(
-                                fontSize: UIKitDimens.medium,
-                                fontStyle: FontStyle.italic,
+                            widget.pup.address = suggestion!.description;
+                            final placeDetails =
+                                await MapRepository.getPlaceDetails(
+                                    suggestion!.placeId);
+                            if (placeDetails != null) {
+                              setState(() {
+                                _position = LatLng(
+                                    placeDetails.locationLatitude,
+                                    placeDetails.locationLongitude);
+                              });
+                              final ctrl = await _controller.future;
+                              ctrl.moveCamera(
+                                  CameraUpdate.newLatLng(_position));
+                              addMarker(_position);
+                            }
+                          },
+                          noItemsFoundBuilder: (context) {
+                            if (widget.pup.address.isEmpty) {
+                              return const SizedBox(height: UIKitDimens.small);
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.all(UIKitDimens.small),
+                              child: Text(
+                                _autocompleteController.text ==
+                                        widget.pup.address
+                                    ? 'Ingresa una dirección'
+                                    : 'Ningún resultado encontrado.',
+                                style: const TextStyle(
+                                  fontSize: UIKitDimens.medium,
+                                  fontStyle: FontStyle.italic,
+                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            ShadowCard(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      for (var i = 0; i < 4; ++i) ...[
-                        Expanded(
-                          child: Container(
-                            height: UIKitDimens.extraExtraExtraLarge,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            foregroundDecoration: BoxDecoration(
-                              border: Border.all(
-                                width: UIKitDimens.extraSmall,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              borderRadius:
-                                  BorderRadius.circular(UIKitDimens.medium),
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: UIKitDimens.extraSmall,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              borderRadius:
-                                  BorderRadius.circular(UIKitDimens.medium),
-                            ),
-                            child: loadedImageOrPlaceholder(i),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: UIKitDimens.small,
-                        ),
-                      ]
-                    ],
-                  ),
-                  const SizedBox(
-                    height: UIKitDimens.small,
-                  ),
-                  GreyElevatedButton(
-                    onPressed: () async {
-                      if (_files.length + 1 > 4) {
-                        await ToastHelpers.showWarning(
-                            'Puedes tomar un máximo de 4 fotos.');
-                        return;
-                      }
-                      pickImage();
-                    },
-                    isFullWidth: true,
-                    child: Row(
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              ShadowCard(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Icon(
-                          Icons.camera_alt,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        const SizedBox(
-                          width: UIKitDimens.medium,
-                        ),
-                        const Text('Tomar fotos del punto')
+                        for (var i = 0; i < 4; ++i) ...[
+                          Expanded(
+                            child: Container(
+                              height: UIKitDimens.extraExtraExtraLarge,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              foregroundDecoration: BoxDecoration(
+                                border: Border.all(
+                                  width: UIKitDimens.extraSmall,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                borderRadius:
+                                    BorderRadius.circular(UIKitDimens.medium),
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: UIKitDimens.extraSmall,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                borderRadius:
+                                    BorderRadius.circular(UIKitDimens.medium),
+                              ),
+                              child: loadedImageOrPlaceholder(i),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: UIKitDimens.small,
+                          ),
+                        ]
                       ],
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: UIKitDimens.small,
+                    ),
+                    GreyElevatedButton(
+                      onPressed: () async {
+                        if (_files.length + 1 > 4) {
+                          await ToastHelpers.showWarning(
+                              'Puedes tomar un máximo de 4 fotos.');
+                          return;
+                        }
+                        pickImage();
+                      },
+                      isFullWidth: true,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          const SizedBox(
+                            width: UIKitDimens.medium,
+                          ),
+                          const Text('Tomar fotos del punto')
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            PrimaryElevatedButton(
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                if (widget.pup.address.isNotEmpty && _files.isNotEmpty) {
-                  goBackAndSave();
-                }
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              isFullWidth: true,
-              child: widget.pup.address.isEmpty
-                  ? const Text('Busca y selecciona una ubicación')
-                  : _files.isEmpty
-                      ? const Text('Sube al menos 1 foto')
-                      : isLoading
-                          ? const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                PrimaryButtonLoader(),
-                                SizedBox(
-                                  width: UIKitDimens.small,
-                                ),
-                                Text('Enviando'),
-                              ],
-                            )
-                          : const Text('Enviar y continuar'),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            GreyElevatedButton(
-              onPressed: () {
-                goBack();
-              },
-              isFullWidth: true,
-              child: const Text('Cancelar'),
-            ),
-          ],
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              PrimaryElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  if (widget.pup.address.isNotEmpty && _files.isNotEmpty) {
+                    goBackAndSave();
+                  }
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                isFullWidth: true,
+                child: widget.pup.address.isEmpty
+                    ? const Text('Busca y selecciona una ubicación')
+                    : _files.isEmpty
+                        ? const Text('Sube al menos 1 foto')
+                        : isLoading
+                            ? const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  PrimaryButtonLoader(),
+                                  SizedBox(
+                                    width: UIKitDimens.small,
+                                  ),
+                                  Text('Enviando'),
+                                ],
+                              )
+                            : const Text('Enviar y continuar'),
+              ),
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              GreyElevatedButton(
+                onPressed: () {
+                  goBack();
+                },
+                isFullWidth: true,
+                child: const Text('Cancelar'),
+              ),
+            ],
+          ),
         ),
       ),
     );

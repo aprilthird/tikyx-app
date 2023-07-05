@@ -1,7 +1,14 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:app/pages/orders/orders.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:data/repositories/auth.dart';
+import 'package:data/repositories/file.dart';
+import 'package:domain/models/seller.dart';
+import 'package:domain/models/session.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:uikit/components/buttons/grey_elevated_button.dart';
 import 'package:uikit/components/buttons/primary_elevated_button.dart';
@@ -10,7 +17,14 @@ import 'package:uikit/dimens/dimens.dart';
 import 'package:uikit/fonts/sizes.dart';
 
 class OrdersSummaryPage extends StatefulWidget {
-  const OrdersSummaryPage({super.key});
+  const OrdersSummaryPage({
+    super.key,
+    required this.session,
+    required this.seller,
+  });
+
+  final Session session;
+  final Seller seller;
 
   @override
   State<OrdersSummaryPage> createState() => _OrdersSummaryPageState();
@@ -20,6 +34,26 @@ class _OrdersSummaryPageState extends State<OrdersSummaryPage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Widget profilePicture() {
+    if (widget.seller.profileImageUrl == null) {
+      return Image.asset('assets/images/placeholder_user.png');
+    }
+    final future =
+        FileRepository.downloadFile("sellers", widget.seller.profileImageUrl!);
+    return FutureBuilder(
+      future: future,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return kIsWeb
+              ? Image.network(XFile.fromData(snapshot.data as Uint8List).path)
+              : Image.file(
+                  File(XFile.fromData(snapshot.data as Uint8List).path));
+        }
+        return Image.asset('assets/images/placeholder_user.png');
+      },
+    );
   }
 
   @override
@@ -34,10 +68,20 @@ class _OrdersSummaryPageState extends State<OrdersSummaryPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Image(
+                Container(
+                  height: 50,
                   alignment: Alignment.center,
-                  image: AssetImage('assets/images/icon_profile.png'),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(UIKitDimens.extraExtraLarge),
+                  ),
+                  child: profilePicture(),
                 ),
+                // const Image(
+                //   alignment: Alignment.center,
+                //   image: AssetImage('assets/images/icon_profile.png'),
+                // ),
                 Row(
                   children: [
                     ShadowCard(
@@ -60,11 +104,21 @@ class _OrdersSummaryPageState extends State<OrdersSummaryPage> {
             const SizedBox(
               height: UIKitDimens.medium,
             ),
-            const Text(
-              'Hola!',
-              style: TextStyle(
-                fontSize: UIKitFontSize.extraLarge,
-                fontWeight: FontWeight.bold,
+            RichText(
+              text: TextSpan(
+                text: 'Hola ',
+                style: const TextStyle(
+                  fontSize: UIKitFontSize.extraLarge,
+                ),
+                children: [
+                  TextSpan(
+                    text: "${widget.seller.name}!",
+                    style: const TextStyle(
+                      fontSize: UIKitFontSize.extraLarge,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(

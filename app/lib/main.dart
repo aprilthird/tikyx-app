@@ -6,6 +6,7 @@ import 'package:domain/models/app_user.dart';
 import 'package:domain/models/pup.dart';
 import 'package:domain/models/session.dart';
 import 'package:data/initializer/remote.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:uikit/colors/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         // colorScheme: ColorScheme.fromSwatch().copyWith(
         //   primary: UIKitColors.primary,
         // ),
+        textTheme: GoogleFonts.poppinsTextTheme(),
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),

@@ -47,9 +47,9 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      var results = await SellerRepository.getAll();
-      var test = widget.session.user.id;
-      var results1 = await PupRepository.getAll();
+      // var results = await SellerRepository.getAll();
+      // var test = widget.session.user.id;
+      // var results1 = await PupRepository.getAll();
 
       await FileRepository.deleteFile("sellers",
           "3688ff97-7e6c-4584-bf9a-651263263110/profile/test_profile.png");
@@ -101,42 +101,127 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(UIKitDimens.medium),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Registro de punto',
-              style: TextStyle(
-                fontSize: UIKitDimens.large,
-                fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(UIKitDimens.medium),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Registro de punto',
+                style: TextStyle(
+                  fontSize: UIKitDimens.large,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: UIKitDimens.medium,
-            ),
-            const Text(
-                'Necesitas completar todos los requisitos para habilitar el punto.'),
-            Expanded(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  if (widget.seller.type == SellerUtils.typeOwner) ...[
+              const SizedBox(
+                height: UIKitDimens.medium,
+              ),
+              const Text(
+                  'Necesitas completar todos los requisitos para habilitar el punto.'),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    if (widget.seller.type == SellerUtils.typeOwner) ...[
+                      ShadowCard(
+                        paddingValue: UIKitDimens.medium,
+                        secondaryPaddingValue: UIKitDimens.small,
+                        onPressed: () async {
+                          await goToSignupPermissionUpload();
+                        },
+                        child: Column(
+                          children: [
+                            const Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.insert_drive_file_outlined),
+                                SizedBox(
+                                  width: UIKitDimens.medium,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Autorización Municipal',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                        'Subir el documento para ser verificado'),
+                                  ],
+                                )
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child:
+                                      continueOrCompleted(firstStepCompleted),
+                                ),
+                                const Icon(Icons.arrow_right_alt),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      ShadowCard(
+                        paddingValue: UIKitDimens.medium,
+                        secondaryPaddingValue: UIKitDimens.small,
+                        onPressed: () async {
+                          await goToSignupPickLocation();
+                        },
+                        child: Column(
+                          children: [
+                            const Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(Icons.place_outlined),
+                                SizedBox(
+                                  width: UIKitDimens.medium,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Agregar Punto',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text('Subir fotos de punto o procesar'),
+                                  ],
+                                )
+                              ],
+                            ),
+                            const Divider(),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child:
+                                      continueOrCompleted(secondStepCompleted),
+                                ),
+                                const Icon(Icons.arrow_right_alt),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                     ShadowCard(
                       paddingValue: UIKitDimens.medium,
                       secondaryPaddingValue: UIKitDimens.small,
                       onPressed: () async {
-                        await goToSignupPermissionUpload();
+                        await goToSignupIdUpload();
                       },
                       child: Column(
                         children: [
                           const Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.insert_drive_file_outlined),
+                              Icon(Icons.contact_emergency_outlined),
                               SizedBox(
                                 width: UIKitDimens.medium,
                               ),
@@ -144,12 +229,11 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Autorización Municipal',
+                                    'Foto DNI',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text(
-                                      'Subir el documento para ser verificado'),
+                                  Text('Subir ambos lados del documento'),
                                 ],
                               )
                             ],
@@ -158,7 +242,7 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                           Row(
                             children: [
                               Expanded(
-                                child: continueOrCompleted(firstStepCompleted),
+                                child: continueOrCompleted(thirdStepCompleted),
                               ),
                               const Icon(Icons.arrow_right_alt),
                             ],
@@ -170,14 +254,14 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                       paddingValue: UIKitDimens.medium,
                       secondaryPaddingValue: UIKitDimens.small,
                       onPressed: () async {
-                        await goToSignupPickLocation();
+                        await goToSignupPhotoUpload();
                       },
                       child: Column(
                         children: [
                           const Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.place_outlined),
+                              Icon(Icons.perm_contact_calendar_outlined),
                               SizedBox(
                                 width: UIKitDimens.medium,
                               ),
@@ -185,11 +269,12 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Agregar Punto',
+                                    'Foto de perfil',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  Text('Subir fotos de punto o procesar'),
+                                  Text(
+                                      'Esta foto será pública desde tu perfil'),
                                 ],
                               )
                             ],
@@ -198,7 +283,7 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                           Row(
                             children: [
                               Expanded(
-                                child: continueOrCompleted(secondStepCompleted),
+                                child: continueOrCompleted(fourthStepCompleted),
                               ),
                               const Icon(Icons.arrow_right_alt),
                             ],
@@ -207,199 +292,123 @@ class _SignupSummaryPageState extends State<SignupSummaryPage> {
                       ),
                     ),
                   ],
-                  ShadowCard(
-                    paddingValue: UIKitDimens.medium,
-                    secondaryPaddingValue: UIKitDimens.small,
-                    onPressed: () async {
-                      await goToSignupIdUpload();
-                    },
-                    child: Column(
-                      children: [
-                        const Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.contact_emergency_outlined),
-                            SizedBox(
-                              width: UIKitDimens.medium,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Foto DNI',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Subir ambos lados del documento'),
-                              ],
-                            )
-                          ],
-                        ),
-                        const Divider(),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: continueOrCompleted(thirdStepCompleted),
-                            ),
-                            const Icon(Icons.arrow_right_alt),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  ShadowCard(
-                    paddingValue: UIKitDimens.medium,
-                    secondaryPaddingValue: UIKitDimens.small,
-                    onPressed: () async {
-                      await goToSignupPhotoUpload();
-                    },
-                    child: Column(
-                      children: [
-                        const Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.perm_contact_calendar_outlined),
-                            SizedBox(
-                              width: UIKitDimens.medium,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Foto de perfil',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Esta foto será pública desde tu perfil'),
-                              ],
-                            )
-                          ],
-                        ),
-                        const Divider(),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: continueOrCompleted(fourthStepCompleted),
-                            ),
-                            const Icon(Icons.arrow_right_alt),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-            PrimaryElevatedButton(
-              onPressed: () async {
-                var stepsCompleted = widget.seller.type == SellerUtils.typeOwner
-                    ? firstStepCompleted &&
-                        secondStepCompleted &&
-                        thirdStepCompleted &&
-                        fourthStepCompleted
-                    : thirdStepCompleted && fourthStepCompleted;
-                if (!stepsCompleted) {
-                  showDialog(
-                    context: context,
-                    builder: (_) => AlertDialog(
-                      title: const Text('Tienes pasos pendientes de completar'),
-                      elevation: UIKitDimens.large,
-                      actions: [
-                        TextButton(
-                          child: const Text('Ok'),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ),
-                    barrierDismissible: true,
-                  );
-                  return;
-                }
+              PrimaryElevatedButton(
+                onPressed: () async {
+                  var stepsCompleted =
+                      widget.seller.type == SellerUtils.typeOwner
+                          ? firstStepCompleted &&
+                              secondStepCompleted &&
+                              thirdStepCompleted &&
+                              fourthStepCompleted
+                          : thirdStepCompleted && fourthStepCompleted;
+                  if (!stepsCompleted) {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title:
+                            const Text('Tienes pasos pendientes de completar'),
+                        elevation: UIKitDimens.large,
+                        actions: [
+                          TextButton(
+                            child: const Text('Ok'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                      barrierDismissible: true,
+                    );
+                    return;
+                  }
 
-                setState(() {
-                  isLoading = true;
-                });
-                var idBackPath =
-                    "${widget.session.user.id}/id_back/${widget.seller.idBackImageFile!.name}";
-                var idFrontPath =
-                    "${widget.session.user.id}/id_front/${widget.seller.idFrontImageFile!.name}";
-                var profilePicturePath =
-                    "${widget.session.user.id}/profile/${widget.seller.profileImageFile!.name}";
+                  setState(() {
+                    isLoading = true;
+                  });
+                  var idBackPath =
+                      "${widget.session.user.id}/id_back/${widget.seller.idBackImageFile!.name}";
+                  var idFrontPath =
+                      "${widget.session.user.id}/id_front/${widget.seller.idFrontImageFile!.name}";
+                  var profilePicturePath =
+                      "${widget.session.user.id}/profile/${widget.seller.profileImageFile!.name}";
 
-                await FileRepository.uploadFile(
-                    "sellers", idBackPath, widget.seller.idBackImageFile!);
-                await FileRepository.uploadFile(
-                    "sellers", idFrontPath, widget.seller.idFrontImageFile!);
-                await FileRepository.uploadFile("sellers", profilePicturePath,
-                    widget.seller.profileImageFile!);
-
-                widget.seller.idFrontImageUrl = idFrontPath;
-                widget.seller.idBackImageUrl = idBackPath;
-                widget.seller.profileImageUrl = profilePicturePath;
-
-                var seller = await SellerRepository.create(widget.seller);
-
-                if (widget.seller.type == SellerUtils.typeOwner) {
-                  var authPath =
-                      "${widget.session.user.id}/pup_munic/${widget.pup!.authImageFile!.name}";
                   await FileRepository.uploadFile(
-                      "sellers", authPath, widget.pup!.authImageFile!);
-                  widget.pup!.authImageUrl = authPath;
+                      "sellers", idBackPath, widget.seller.idBackImageFile!);
+                  await FileRepository.uploadFile(
+                      "sellers", idFrontPath, widget.seller.idFrontImageFile!);
+                  await FileRepository.uploadFile("sellers", profilePicturePath,
+                      widget.seller.profileImageFile!);
 
-                  if (widget.pup!.locationImageFile1 != null) {
-                    var path =
-                        "${widget.session.user.id}/pup_local_1/${widget.pup!.locationImageFile1!.name}";
+                  widget.seller.idFrontImageUrl = idFrontPath;
+                  widget.seller.idBackImageUrl = idBackPath;
+                  widget.seller.profileImageUrl = profilePicturePath;
+
+                  var seller = await SellerRepository.create(widget.seller);
+
+                  if (widget.seller.type == SellerUtils.typeOwner) {
+                    var authPath =
+                        "${widget.session.user.id}/pup_munic/${widget.pup!.authImageFile!.name}";
                     await FileRepository.uploadFile(
-                        "sellers", path, widget.pup!.locationImageFile1!);
-                    widget.pup!.locationImage1Url = path;
-                  }
-                  if (widget.pup!.locationImageFile2 != null) {
-                    var path =
-                        "${widget.session.user.id}/pup_local_2/${widget.pup!.locationImageFile2!.name}";
-                    await FileRepository.uploadFile(
-                        "sellers", path, widget.pup!.locationImageFile2!);
-                    widget.pup!.locationImage2Url = path;
-                  }
-                  if (widget.pup!.locationImageFile3 != null) {
-                    var path =
-                        "${widget.session.user.id}/pup_local_3/${widget.pup!.locationImageFile3!.name}";
-                    await FileRepository.uploadFile(
-                        "sellers", path, widget.pup!.locationImageFile3!);
-                    widget.pup!.locationImage3Url = path;
-                  }
-                  if (widget.pup!.locationImageFile4 != null) {
-                    var path =
-                        "${widget.session.user.id}/pup_local_1/${widget.pup!.locationImageFile4!.name}";
-                    await FileRepository.uploadFile(
-                        "sellers", path, widget.pup!.locationImageFile4!);
-                    widget.pup!.locationImage4Url = path;
+                        "sellers", authPath, widget.pup!.authImageFile!);
+                    widget.pup!.authImageUrl = authPath;
+
+                    if (widget.pup!.locationImageFile1 != null) {
+                      var path =
+                          "${widget.session.user.id}/pup_local_1/${widget.pup!.locationImageFile1!.name}";
+                      await FileRepository.uploadFile(
+                          "sellers", path, widget.pup!.locationImageFile1!);
+                      widget.pup!.locationImage1Url = path;
+                    }
+                    if (widget.pup!.locationImageFile2 != null) {
+                      var path =
+                          "${widget.session.user.id}/pup_local_2/${widget.pup!.locationImageFile2!.name}";
+                      await FileRepository.uploadFile(
+                          "sellers", path, widget.pup!.locationImageFile2!);
+                      widget.pup!.locationImage2Url = path;
+                    }
+                    if (widget.pup!.locationImageFile3 != null) {
+                      var path =
+                          "${widget.session.user.id}/pup_local_3/${widget.pup!.locationImageFile3!.name}";
+                      await FileRepository.uploadFile(
+                          "sellers", path, widget.pup!.locationImageFile3!);
+                      widget.pup!.locationImage3Url = path;
+                    }
+                    if (widget.pup!.locationImageFile4 != null) {
+                      var path =
+                          "${widget.session.user.id}/pup_local_1/${widget.pup!.locationImageFile4!.name}";
+                      await FileRepository.uploadFile(
+                          "sellers", path, widget.pup!.locationImageFile4!);
+                      widget.pup!.locationImage4Url = path;
+                    }
+
+                    widget.pup!.ownerId = seller.id;
+                    await PupRepository.create(widget.pup!);
                   }
 
-                  widget.pup!.ownerId = seller.id;
-                  await PupRepository.create(widget.pup!);
-                }
-
-                await AuthRepository.signOut();
-                await goToSignupFinalMessage();
-                setState(() {
-                  isLoading = false;
-                });
-              },
-              isFullWidth: true,
-              child: isLoading
-                  ? const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PrimaryButtonLoader(),
-                        SizedBox(
-                          width: UIKitDimens.small,
-                        ),
-                        Text('Guardando'),
-                      ],
-                    )
-                  : const Text('Continuar'),
-            ),
-          ],
+                  await AuthRepository.signOut();
+                  await goToSignupFinalMessage();
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                isFullWidth: true,
+                child: isLoading
+                    ? const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          PrimaryButtonLoader(),
+                          SizedBox(
+                            width: UIKitDimens.small,
+                          ),
+                          Text('Guardando'),
+                        ],
+                      )
+                    : const Text('Continuar'),
+              ),
+            ],
+          ),
         ),
       ),
     );

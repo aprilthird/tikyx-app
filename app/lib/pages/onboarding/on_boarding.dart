@@ -21,10 +21,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FileRepository.getBuckets();
-      FileRepository.getFiles("sellers");
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
   }
 
   @override
@@ -34,61 +31,63 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     );
 
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/bg_on_boarding.png'),
-                  fit: BoxFit.fitWidth,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/bg_on_boarding.png'),
+                    fit: BoxFit.fitWidth,
+                  ),
+                ),
+                child: null,
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(UIKitDimens.medium),
+                child: Column(
+                  children: [
+                    Text(
+                      'Bienvenido a Tikyx',
+                      textAlign: TextAlign.center,
+                      // style: TextStyle(
+                      //   fontSize: UIKitFontSize.extraLarge,
+                      //   fontWeight: FontWeight.bold,
+                      // ),
+                      style: customTextStyle,
+                    ),
+                    const SizedBox(
+                      height: UIKitDimens.medium,
+                    ),
+                    const SizedBox(
+                      width: 280,
+                      child: Text(
+                        'Antes de empezar te pediremos algunos permisos para optimizar tu experiencia con nuestra app.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: UIKitFontSize.large),
+                      ),
+                    ),
+                    const Spacer(),
+                    PrimaryElevatedButton(
+                      onPressed: () async {
+                        await goToPermissionsOrLogin();
+                      },
+                      isFullWidth: true,
+                      child: const Text('Empezar'),
+                    ),
+                  ],
                 ),
               ),
-              child: null,
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(UIKitDimens.medium),
-              child: Column(
-                children: [
-                  Text(
-                    'Bienvenido a Tikyx',
-                    textAlign: TextAlign.center,
-                    // style: TextStyle(
-                    //   fontSize: UIKitFontSize.extraLarge,
-                    //   fontWeight: FontWeight.bold,
-                    // ),
-                    style: customTextStyle,
-                  ),
-                  const SizedBox(
-                    height: UIKitDimens.medium,
-                  ),
-                  const SizedBox(
-                    width: 280,
-                    child: Text(
-                      'Antes de empezar te pediremos algunos permisos para optimizar tu experiencia con nuestra app.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: UIKitFontSize.large),
-                    ),
-                  ),
-                  const Spacer(),
-                  PrimaryElevatedButton(
-                    onPressed: () async {
-                      await goToPermissionsOrLogin();
-                    },
-                    isFullWidth: true,
-                    child: const Text('Empezar'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -21,8 +21,19 @@ class AppUser {
       aud: json['aud'],
       role: json['role'],
       phoneNumber: json['phone_number'],
-      // lastSignInAt: json['last_sign_in_at'],
+      lastSignInAt: json['last_sign_in_at'],
       createdAt: json['created_at'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'aud': aud,
+      'role': role,
+      'phone_number': phoneNumber,
+      'last_sign_in_at': lastSignInAt,
+      'created_at': createdAt,
+    };
   }
 }
